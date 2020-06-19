@@ -1,7 +1,8 @@
 package units.solvers.backend.z3smt.encoder;
 
-import backend.z3smt.Z3SmtFormatTranslator;
-import backend.z3smt.encoder.Z3SmtAbstractConstraintEncoder;
+import checkers.inference.solver.backend.z3smt.Z3SmtFormatTranslator;
+import checkers.inference.solver.backend.z3smt.encoder.Z3SmtAbstractConstraintEncoder;
+import checkers.inference.model.ComparableConstraint.ComparableOperationKind;
 import checkers.inference.model.ConstantSlot;
 import checkers.inference.model.Slot;
 import checkers.inference.model.VariableSlot;
@@ -47,4 +48,24 @@ public class UnitsZ3SmtComparableConstraintEncoder
     public BoolExpr encodeConstant_Variable(ConstantSlot fst, VariableSlot snd) {
         return encode(fst, snd);
     }
+
+	@Override
+	public BoolExpr encodeVariable_Variable(ComparableOperationKind operation, VariableSlot fst, VariableSlot snd) {
+		return encode(fst, snd);
+	}
+
+	@Override
+	public BoolExpr encodeVariable_Constant(ComparableOperationKind operation, VariableSlot fst, ConstantSlot snd) {
+		return encode(fst, snd);
+	}
+
+	@Override
+	public BoolExpr encodeConstant_Variable(ComparableOperationKind operation, ConstantSlot fst, VariableSlot snd) {
+		return encode(fst, snd);
+	}
+
+	@Override
+	public BoolExpr encodeConstant_Constant(ComparableOperationKind operation, ConstantSlot fst, ConstantSlot snd) {
+		return encode(fst, snd);
+	}
 }

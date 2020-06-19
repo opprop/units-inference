@@ -391,7 +391,7 @@ public class UnitsInferenceAnnotatedTypeFactory extends InferenceAnnotatedTypeFa
                         // Generate a fresh variable for inference
                         AnnotationLocation loc =
                                 VariableAnnotator.treeToLocation(atypeFactory, tree);
-                        VariableSlot varSlot = slotManager.createVariableSlot(loc);
+                        VariableSlot varSlot = slotManager.createVariableSlot(loc, atm.getUnderlyingType());
                         atm.replaceAnnotation(slotManager.getAnnotation(varSlot));
                     }
                 }

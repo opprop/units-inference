@@ -1,7 +1,7 @@
 package units.solvers.backend.z3smt.encoder;
 
-import backend.z3smt.Z3SmtFormatTranslator;
-import backend.z3smt.encoder.Z3SmtAbstractConstraintEncoder;
+import checkers.inference.solver.backend.z3smt.Z3SmtFormatTranslator;
+import checkers.inference.solver.backend.z3smt.encoder.Z3SmtAbstractConstraintEncoder;
 import checkers.inference.model.ArithmeticConstraint.ArithmeticOperationKind;
 import checkers.inference.model.ArithmeticVariableSlot;
 import checkers.inference.model.ConstantSlot;
