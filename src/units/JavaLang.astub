@@ -2,6 +2,9 @@ import units.qual.*;
 
 package java.lang;
 
+@UnitsBottom class Object{
+}
+
 class System {
     static @ms long currentTimeMillis();
     static @ns long nanoTime();
@@ -22,3 +25,12 @@ class String implements Serializable, Comparable<String>, CharSequence {
     static String valueOf(@UnknownUnits float arg0);
     static String valueOf(@UnknownUnits double arg0);
 }
+
+class StringBuilder implements Serializable, CharSequence {
+    StringBuilder append(@UnknownUnits int i);
+    StringBuilder append(@UnknownUnits long lng);
+    StringBuilder append(@UnknownUnits float f);
+    StringBuilder append(@UnknownUnits double b);
+    StringBuilder append(@UnknownUnits char c);
+}
+

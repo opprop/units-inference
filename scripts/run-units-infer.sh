@@ -14,6 +14,9 @@ export PATH=$AFU/scripts:$PATH
 CHECKER=units.UnitsChecker
 
 SOLVER=units.solvers.backend.UnitsSolverEngine
+DEBUG_SOLVER=checkers.inference.solver.DebugSolver
+# SOLVER="$DEBUG_SOLVER"
+
 if [ -n "$1" ] && [ $1 = "GJE" ]; then
     SOLVERARGS=solver=GJE,collectStatistics=true,writeSolutions=true,noAppend=true
 elif [ -n "$1" ] && [ $1 = "true" ]; then

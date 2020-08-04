@@ -91,11 +91,15 @@ public class UnitsZ3SmtEncoderUtils {
         // variable declarations outputted for the z3 files
         BoolExpr allExponentsAreZero = allExponentsAreZero(ctx, unit);
         /* @formatter:off // this is for eclipse formatter */
-        return UnitsZ3SmtEncoderUtils.mkOneHot(
-                ctx,
-                ctx.mkAnd(ctx.mkNot(unit.getUnknownUnits()), ctx.mkNot(unit.getUnitsBottom())),
-                ctx.mkAnd(unit.getUnknownUnits(), allExponentsAreZero),
-                ctx.mkAnd(unit.getUnitsBottom(), allExponentsAreZero));
+        return ctx.mkAnd(
+                ctx.mkNot(unit.getRDUnits()),
+                UnitsZ3SmtEncoderUtils.mkOneHot(
+                        ctx,
+                        ctx.mkAnd(
+                                ctx.mkNot(unit.getUnknownUnits()),
+                                ctx.mkNot(unit.getUnitsBottom())),
+                        ctx.mkAnd(unit.getUnknownUnits(), allExponentsAreZero),
+                        ctx.mkAnd(unit.getUnitsBottom(), allExponentsAreZero)));
         /* @formatter:on // this is for eclipse formatter */
 
         // simplify xor (xor ((not x and not y), x), y)
@@ -127,6 +131,7 @@ public class UnitsZ3SmtEncoderUtils {
         BoolExpr allExponentsAreZero = allExponentsAreZero(ctx, unit);
         /* @formatter:off // this is for eclipse formatter */
         return ctx.mkAnd(
+                ctx.mkNot(unit.getRDUnits()),
                 ctx.mkNot(unit.getUnknownUnits()),
                 ctx.mkNot(unit.getUnitsBottom()),
                 allExponentsAreZero);
@@ -141,6 +146,7 @@ public class UnitsZ3SmtEncoderUtils {
         /* @formatter:off // this is for eclipse formatter */
         BoolExpr equalityEncoding =
                 ctx.mkAnd(
+                        ctx.mkEq(fst.getRDUnits(), snd.getRDUnits()),
                         ctx.mkEq(fst.getUnknownUnits(), snd.getUnknownUnits()),
                         ctx.mkEq(fst.getUnitsBottom(), snd.getUnitsBottom()));
         if (UnitsRepresentationUtils.getInstance().serializePrefix()) {

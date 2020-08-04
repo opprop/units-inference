@@ -2,6 +2,7 @@ import units.qual.*;
 
 package java.util.concurrent;
 
+@UnitsBottom
 enum TimeUnit {
     @ns NANOSECONDS,
     @us MICROSECONDS,
@@ -14,23 +15,23 @@ enum TimeUnit {
     // For example, to convert 10 minutes to milliseconds, use:
     // TimeUnit.MILLISECONDS.convert(10L, TimeUnit.MINUTES)
     // TODO: enforce source value and unit are equal
-    @PolyUnit long convert(@PolyUnit TimeUnit this, @UnknownUnits long sourceDuration,
+    @RDU long convert(@UnknownUnits TimeUnit this, @UnknownUnits long sourceDuration,
             @UnknownUnits TimeUnit sourceUnit);
 
     // TODO: add dimensional bound on duration to be a time value
-    @ns long toNanos(@UnknownUnits long duration);
+    @ns long toNanos(@UnknownUnits TimeUnit this, @RDU long duration);
 
-    @us long toMicros(@UnknownUnits long duration);
+    @us long toMicros(@UnknownUnits TimeUnit this, @RDU long duration);
 
-    @ms long toMillis(@UnknownUnits long duration);
+    @ms long toMillis(@UnknownUnits TimeUnit this, @RDU long duration);
 
-    @s long toSeconds(@UnknownUnits long duration);
+    @s long toSeconds(@UnknownUnits TimeUnit this, @RDU long duration);
 
-    long toMinutes(@UnknownUnits long duration);
+    long toMinutes(@UnknownUnits TimeUnit this, @RDU long duration);
 
-    long toHours(@UnknownUnits long duration);
+    long toHours(@UnknownUnits TimeUnit this, @RDU long duration);
 
-    long toDays(@UnknownUnits long duration);
+    long toDays(@UnknownUnits TimeUnit this, @RDU long duration);
 
     // TODO: enforce "this" has same unit as "timeout"
     void timedWait(@UnknownUnits TimeUnit this, Object obj, @UnknownUnits long timeout);

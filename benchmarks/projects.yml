@@ -22,6 +22,11 @@ projects:
     build: mvn -B -DskipTests compile
     clean: mvn -B clean
 
+  commons-math:
+    giturl: https://github.com/txiang61-benchmarks/commons-math.git
+    build: mvn install -Drat.numUnapprovedLicenses=100
+    clean: mvn -B clean
+
   # Converted to use units
   # TODO: revert to unsat version
   jblas:

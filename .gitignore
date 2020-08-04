@@ -37,6 +37,10 @@ manual-tests/annotated
 manual-tests/inference
 manual-tests/typecheck
 manual-tests/insertionTest
+annotated/
+unsatConstraints.txt
+statistics.txt
+solutions.txt
 
 # temp files
 manual-tests/unused*

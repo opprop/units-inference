@@ -19,7 +19,9 @@ import org.checkerframework.framework.type.AnnotatedTypeMirror;
 import org.checkerframework.framework.type.AnnotationClassLoader;
 import org.checkerframework.framework.type.DefaultAnnotatedTypeFormatter;
 import org.checkerframework.framework.type.QualifierHierarchy;
+import org.checkerframework.framework.type.ViewpointAdapter;
 import org.checkerframework.framework.type.treeannotator.ListTreeAnnotator;
+import org.checkerframework.framework.type.treeannotator.LiteralTreeAnnotator;
 import org.checkerframework.framework.type.treeannotator.PropagationTreeAnnotator;
 import org.checkerframework.framework.type.treeannotator.TreeAnnotator;
 import org.checkerframework.framework.type.typeannotator.DefaultForTypeAnnotator;
@@ -56,6 +58,11 @@ public class UnitsAnnotatedTypeFactory extends BaseAnnotatedTypeFactory {
     }
 
     @Override
+    protected ViewpointAdapter createViewpointAdapter() {
+        return new UnitsViewpointAdapter(this);
+    }
+
+    @Override
     protected Set<Class<? extends Annotation>> createSupportedTypeQualifiers() {
         // get all the loaded annotations
         Set<Class<? extends Annotation>> qualSet = new HashSet<Class<? extends Annotation>>();
@@ -63,7 +70,6 @@ public class UnitsAnnotatedTypeFactory extends BaseAnnotatedTypeFactory {
 
         // // load all the external units
         // loadAllExternalUnits();
-        //
         // // copy all loaded external Units to qual set
         // qualSet.addAll(externalQualsMap.values());
 
@@ -121,7 +127,7 @@ public class UnitsAnnotatedTypeFactory extends BaseAnnotatedTypeFactory {
         if (AnnotationUtils.areSameByClass(anno, UnitsRep.class)) {
             return unitsRepUtils.hasAllBaseUnits(anno);
         }
-        // Anno is PolyAll, PolyUnit
+        // Anno is PolyUnit
         return AnnotationUtils.containsSame(this.getQualifierHierarchy().getTypeQualifiers(), anno);
     }
 
@@ -239,6 +245,7 @@ public class UnitsAnnotatedTypeFactory extends BaseAnnotatedTypeFactory {
 
             // Update tops
             tops.remove(unitsRepUtils.RAWUNITSREP);
+            tops.remove(unitsRepUtils.RECEIVER_DEPENDANT_UNIT);
             tops.add(unitsRepUtils.TOP);
 
             // System.err.println(" === Typecheck ATF ");
@@ -276,11 +283,19 @@ public class UnitsAnnotatedTypeFactory extends BaseAnnotatedTypeFactory {
                 return true;
             }
 
-            // Case: @PolyAll and @PolyUnit are treated as @UnknownUnits
+            // Case: @PolyUnit are treated as @UnknownUnits
             if (AnnotationUtils.areSame(subAnno, unitsRepUtils.POLYUNIT)) {
                 return isSubtype(unitsRepUtils.TOP, superAnno);
             }
             if (AnnotationUtils.areSame(superAnno, unitsRepUtils.POLYUNIT)) {
+                return true;
+            }
+
+            // Case: @RDU shouldn't appear. throw error?
+            if (AnnotationUtils.areSame(subAnno, unitsRepUtils.RECEIVER_DEPENDANT_UNIT)) {
+                return isSubtype(unitsRepUtils.TOP, superAnno);
+            }
+            if (AnnotationUtils.areSame(superAnno, unitsRepUtils.RECEIVER_DEPENDANT_UNIT)) {
                 return true;
             }
 
@@ -312,13 +327,18 @@ public class UnitsAnnotatedTypeFactory extends BaseAnnotatedTypeFactory {
     @Override
     public TreeAnnotator createTreeAnnotator() {
         return new ListTreeAnnotator(
-                new UnitsTypecheckLiteralTreeAnnotator(), new UnitsPropagationTreeAnnotator());
+                new UnitsLiteralTreeAnnotator(this), new UnitsPropagationTreeAnnotator());
     }
 
-    protected final class UnitsTypecheckLiteralTreeAnnotator extends UnitsLiteralTreeAnnotator {
+    protected final class UnitsLiteralTreeAnnotator extends LiteralTreeAnnotator {
         // Programmatically set the qualifier implicits
-        public UnitsTypecheckLiteralTreeAnnotator() {
-            super(UnitsAnnotatedTypeFactory.this);
+        public UnitsLiteralTreeAnnotator(AnnotatedTypeFactory atf) {
+            super(atf);
+            // set BOTTOM as the literal qualifier for null literals
+            addLiteralKind(LiteralKind.NULL, unitsRepUtils.BOTTOM);
+            addLiteralKind(LiteralKind.STRING, unitsRepUtils.DIMENSIONLESS);
+            addLiteralKind(LiteralKind.CHAR, unitsRepUtils.DIMENSIONLESS);
+            addLiteralKind(LiteralKind.BOOLEAN, unitsRepUtils.DIMENSIONLESS);
             // in type checking mode, we also set dimensionless for the number literals
             addLiteralKind(LiteralKind.INT, unitsRepUtils.DIMENSIONLESS);
             addLiteralKind(LiteralKind.LONG, unitsRepUtils.DIMENSIONLESS);

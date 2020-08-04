@@ -23,7 +23,7 @@ class Methods {
         // :: error: (assignment.type.incompatible)
         @m int pum3 = polyUnitMethod(5, 6);
 
-        @m int pum4 = polyUnitMethod(UnitsTools.m, UnitsTools.m);
+        int pum4 = polyUnitMethod(UnitsTools.m, UnitsTools.m);
 
         // :: error: (assignment.type.incompatible)
         @m int pum5 = polyUnitMethod(UnitsTools.m, UnitsTools.s);

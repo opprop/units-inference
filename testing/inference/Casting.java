@@ -8,7 +8,14 @@ class Casting {
 
     int primDim = (int) 20.0f;
 
-    Integer boxDim = 20;
+    int boxDim = 20;
+    @m int boxM = (@m int) boxDim;
 
-    @m Integer boxM = (@m Integer) boxDim;
+    void cast() {
+        int x = 20;
+        @m int y = (@m int) x;
+
+        Integer boxX = 20;
+        @m Integer boxY = (@m Integer) boxX;
+    }
 }

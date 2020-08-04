@@ -19,8 +19,10 @@ import units.representation.UnitsRepresentationUtils;
     "JavaMathTrig.astub",
     "JavaThread.astub",
     "JavaUtil.astub",
+    "JavaText.astub",
+    "JavaAWT.astub", // for josm
     "JavaUtilConcurrent.astub", // for ode4j, not yet annotated for hombucha
-    "ExperimentsJavaAwtGeomAffineTransform.astub", // for imgscalr experiment
+    // "ExperimentsJavaAwtGeomAffineTransform.astub", // for imgscalr experiment
     "ExperimentsSunMiscUnsafe.astub", // for JLargeArrays
 })
 public class UnitsChecker extends BaseInferrableChecker {

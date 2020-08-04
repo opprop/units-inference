@@ -1,0 +1,12 @@
+import units.qual.*;
+
+package java.awt.geom;
+
+class AffineTransform implements Cloneable, Serializable {
+	static AffineTransform getRotateInstance(@rad double theta);
+	static AffineTransform getRotateInstance(@rad double theta, double anchorx, double anchory);
+	void rotate(@rad double theta);
+	void rotate(@rad double theta, double x, double y);
+	void setToRotation(@rad double theta);
+	void setToRotation(@rad double theta, double anchorx, double anchory);
+}
