@@ -1,43 +1,47 @@
-The scripts contained in this folder were tested on ubuntu 18.04 LTS, it is intended to be run on linux.
+The scripts contained in this folder were tested on ubuntu 20.04 LTS, it is intended to be run on linux.
 
-### Setup
+### Dependencies
 
-run `./setup-coq.sh` to download and install Coq v8.8.0 along with its dependencies
+Coq v8.11.0. For interactive proof checking: CoqIDE v8.11.0.
 
 ### Check pUnits proofs
 
-run `./compile.sh`
+run `./compile.sh`.
+
+### Interactively check pUnits proofs
+
+run `./openCoqIDE.sh` to open the proof files in CoqIDE in their dependent ordering.
 
 ### Clean up
 
-run `./cleanup.sh` to remove coq output files
+run `./cleanup.sh` to remove Coq output files.
 
 ## Proof file structure
 
 `TacticalLemmas.v` contains tactic notations from the Software Foundations Coq [Library](http://flint.cs.yale.edu/cs428/coq/sf/SfLib.html), which helps break down proof cases.
 
-`Maps.v` contains the definitions and lemmas for maps from any key type `K` to value type `V`, augmented by a key equality function `key_eq`.
+`Maps.v` contains the definitions and helper lemmas for maps from any key type `K` to any value type `V`, augmented by a key equality function `key_eq`.
 
-`UnitsDefs.v` contains the definitions and lemmas for the unit types **_T_**.
+`Units.v` contains the definitions and helper lemmas for the unit types <img src="https://latex.codecogs.com/svg.latex?\ensuremath{\mathit{T}}" title="T"/> .
 
-`ValueDefs.v` contains the definitions and lemmas for labeled values **_v_**, which are modeled as nats labeled with a unit in Coq.
+`LabeledLiterals.v` contains the definitions and helper lemmas for labeled literals <img src="https://latex.codecogs.com/svg.latex?\ensuremath{\mathit{l%20=%20T_{v}\%20z}}" title="l = Tv z"/> (static semantics) / labeled values <img src="https://latex.codecogs.com/svg.latex?\ensuremath{\mathit{T_{l}\%20z}}" title="Tl z"/> (operational semantics), which are modeled as nats labeled with a unit in Coq.
 
-`IDDefs.v` contains the definitions and lemmas for field identifiers **_f_**.
+`IDs.v` contains the definitions and helper lemmas for variable identifiers <img src="https://latex.codecogs.com/svg.latex?\ensuremath{\mathit{v}}" title="v"/>.
 
-`GammaDefs.v` defines gamma as a map from **_f_** to **_T_**, using the map definitions from `Maps.v`.
+`Gamma.v` defines gamma as a map from <img src="https://latex.codecogs.com/svg.latex?\ensuremath{\mathit{v}}" title="v"/> to <img src="https://latex.codecogs.com/svg.latex?\ensuremath{\mathit{T}}" title="T"/>, using the map definitions from `Maps.v`.
 
-`HeapDefs.v` defines heap as a map from **_f_** to its static field type **_Tf_** and runtime value **_v_**, using the map definitions from `Maps.v`.
+`StackFrame.v` defines Stack Frame <img src="https://latex.codecogs.com/svg.latex?\ensuremath{\mathit{F}}" title="F"/> as a map from <img src="https://latex.codecogs.com/svg.latex?\ensuremath{\mathit{v}}" title="v"/> to its static type <img src="https://latex.codecogs.com/svg.latex?\ensuremath{\mathit{T_{v}}}" title="Tv"/> and labeled value <img src="https://latex.codecogs.com/svg.latex?\ensuremath{\mathit{T_{l}\%20z}}" title="Tl z"/>, using the map definitions from `Maps.v`.
 
-`SubtypingDefs.v` contains the definitions and lemmas for the subtype relationship between units qualifiers, and functions such as the least upper bound of units.
+`Subtyping.v` contains the definitions and helper lemmas for the subtype relationship between units types, and functions such as the least upper bound of units.
 
-`GammaHeapCorrespondence.v` defines the correspondince between a wellformed gamma and a wellformed heap.
+`GammaStackFrameCorrespondence.v` defines the correspondince between a wellformed gamma and a wellformed stack frame.
 
 `UnitsArithmetics.v` defines and proves properties for the arithmetic functions add, multiply, and modulo between units; including the subtype consistent lemmas discussed in the paper.
 
-`FieldDefs.v` contains the definitions and the proof of progress and preservation helper lemmas for field declarations **_fd_** in our language.
+`VarDecls.v` contains the definitions and the proof of progress and preservation helper lemmas for variable declarations <img src="https://latex.codecogs.com/svg.latex?\ensuremath{\mathit{vd}}" title="vd"/> in our language.
 
-`ExpressionDefs.v` contains the definitions and the proof of progress and preservation helper lemmas for expressions **_e_** in our language.
+`Expressions.v` contains the definitions and the proof of progress and preservation helper lemmas for expressions <img src="https://latex.codecogs.com/svg.latex?\ensuremath{\mathit{e}}" title="e"/> in our language.
 
-`StatementDefs.v` contains the definitions and the proof of progress and preservation helper lemmas for assignment statements **_s_** in our language.
+`Statements.v` contains the definitions and the proof of progress and preservation helper lemmas for assignment statements <img src="https://latex.codecogs.com/svg.latex?\ensuremath{\mathit{s}}" title="s"/> in our language.
 
-`ProgramDefs.v` contains the definitions for programs **_P_** in our language, and the overall proof of progress and preservation lemmas.
+`Program.v` contains the definitions for programs <img src="https://latex.codecogs.com/svg.latex?\ensuremath{\mathit{P}}" title="P"/> in our language, and the overall proof of progress and preservation lemmas.

@@ -28,26 +28,31 @@ fi
 echo "Using coqc at $COQC"
 $COQC -v
 
-# Compile options
-COQC="$COQC -opt"
+function compile() {
+  local target=$1
+  echo "Compiling ${target}"
+  $COQC $target -Q $ROOT PUnits 2>&1
+}
 
-$COQC TacticalLemmas.v
-$COQC IDDefs.v
-$COQC MapsDefs.v
+compile TacticalLemmas.v
+compile Maps.v
 
-$COQC UnitsDefs.v
+compile Units.v
+compile LabeledLiterals.v
 
-$COQC ValueDefs.v
-$COQC GammaDefs.v
-$COQC HeapDefs.v
-$COQC SubtypingDefs.v
-$COQC GammaHeapCorrespondence.v
+compile IDs.v
 
-$COQC UnitsArithmetics.v
+compile Gamma.v
+compile StackFrame.v
 
-$COQC FieldDefs.v
-$COQC ExpressionDefs.v
-$COQC StatementDefs.v
-$COQC ProgramDefs.v
+compile Subtyping.v
+compile GammaStackFrameCorrespondence.v
+
+compile UnitsArithmetics.v
+
+compile VarDecls.v
+compile Expressions.v
+compile Statements.v
+compile Program.v
 
 echo "Compilation complete."

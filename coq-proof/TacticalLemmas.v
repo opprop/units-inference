@@ -4,7 +4,8 @@ Import List.ListNotations.
 Require Import Arith.
 Require Import Arith.EqNat.
 Require Import Omega.
-Require Import Strings.String. Open Scope string_scope.
+Require String.
+Open Scope string_scope.
 Open Scope core_scope.
 
 Ltac move_to_top x :=
@@ -31,10 +32,3 @@ Tactic Notation "SSSSCase" constr(name) := Case_aux SSSSCase name.
 Tactic Notation "SSSSSCase" constr(name) := Case_aux SSSSSCase name.
 Tactic Notation "SSSSSSCase" constr(name) := Case_aux SSSSSSCase name.
 Tactic Notation "SSSSSSSCase" constr(name) := Case_aux SSSSSSSCase name.
-
-Theorem ex_falso_quodlibet : forall (P:Prop),
-  False -> P.
-Proof.
-  intros P contra.
-  inversion contra.
-Qed.

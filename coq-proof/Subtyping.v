@@ -1,8 +1,6 @@
-Require Import UnitsDefs.
+From PUnits Require Import Units.
 
-(* Print Visibility. *)
-
-(* Subtype and LUB definitions. *)
+(* Units Subtype and Least Upper Bound definitions. *)
 
 Definition isSubtype(u1 u2 : Unit) : bool :=
   match u1, u2 with
@@ -82,7 +80,7 @@ Proof.
       rewrite -> H1. rewrite -> H0. destruct unit_eq_dec. inversion e. subst. apply H1. inversion H0.
 Qed.
 
-(* LUB definition *)
+(* Least Upper Bound definition *)
 Definition LUB(u1 u2 : Unit) : Unit :=
   if u1 <: u2 then u2
   else if u2 <: u1 then u1
