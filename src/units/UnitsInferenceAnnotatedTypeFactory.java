@@ -95,25 +95,25 @@ public class UnitsInferenceAnnotatedTypeFactory extends InferenceAnnotatedTypeFa
         return new UnitsAnnotationClassLoader(checker);
     }
 
-    // In Inference ATF, this returns the set of real qualifiers
-    @Override
-    protected Set<Class<? extends Annotation>> createSupportedTypeQualifiers() {
-        // get all the loaded annotations
-        Set<Class<? extends Annotation>> qualSet = new HashSet<Class<? extends Annotation>>();
-        // Super grabs all supported qualifiers from the real qualifier hierarchy
-        // and also puts in VarAnnot
-        qualSet.addAll(super.createSupportedTypeQualifiers());
-
-        // System.err.println( " --- quals = " + qualSet );
-
-        // // load all the external units
-        // loadAllExternalUnits();
-        //
-        // // copy all loaded external Units to qual set
-        // qualSet.addAll(externalQualsMap.values());
-
-        return qualSet;
-    }
+//    // In Inference ATF, this returns the set of real qualifiers
+//    @Override
+//    protected Set<Class<? extends Annotation>> createSupportedTypeQualifiers() {
+//        // get all the loaded annotations
+//        Set<Class<? extends Annotation>> qualSet = new HashSet<Class<? extends Annotation>>();
+//        // Super grabs all supported qualifiers from the real qualifier hierarchy
+//        // and also puts in VarAnnot
+//        qualSet.addAll(super.createSupportedTypeQualifiers());
+//
+//        // System.err.println( " --- quals = " + qualSet );
+//
+//        // // load all the external units
+//        // loadAllExternalUnits();
+//        //
+//        // // copy all loaded external Units to qual set
+//        // qualSet.addAll(externalQualsMap.values());
+//
+//        return qualSet;
+//    }
 
     // In Inference ATF, this returns the alias for a given real qualifier
     @Override

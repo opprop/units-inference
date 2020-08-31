@@ -76,7 +76,7 @@ public class UnitsRepresentationUtils {
      * Instances of time units for use with various time APIs, used by {@link
      * UnitsAnnotatedTypeFactory#UnitsImplicitsTreeAnnotator}
      */
-    public AnnotationMirror SECOND, MILLISECOND, MICROSECOND, NANOSECOND;
+//    public AnnotationMirror SECOND, MILLISECOND, MICROSECOND, NANOSECOND;
 
     // Comparator used to sort annotation classes by their simple class name
     private static Comparator<Class<? extends Annotation>> annoClassComparator =
@@ -249,13 +249,13 @@ public class UnitsRepresentationUtils {
 
         SURFACE_TOP = AnnotationBuilder.fromClass(elements, UnknownUnits.class);
         SURFACE_BOTTOM = AnnotationBuilder.fromClass(elements, UnitsBottom.class);
-
-        Map<String, Integer> secondBaseMap = createZeroFilledBaseUnitsMap();
-        secondBaseMap.put("s", 1);
-        SECOND = createInternalUnit(false, false, 0, secondBaseMap);
-        MILLISECOND = createInternalUnit(false, false, -3, secondBaseMap);
-        MICROSECOND = createInternalUnit(false, false, -6, secondBaseMap);
-        NANOSECOND = createInternalUnit(false, false, -9, secondBaseMap);
+//
+//        Map<String, Integer> secondBaseMap = createZeroFilledBaseUnitsMap();
+//        secondBaseMap.put("s", 1);
+//        SECOND = createInternalUnit(false, false, 0, secondBaseMap);
+//        MILLISECOND = createInternalUnit(false, false, -3, secondBaseMap);
+//        MICROSECOND = createInternalUnit(false, false, -6, secondBaseMap);
+//        NANOSECOND = createInternalUnit(false, false, -9, secondBaseMap);
 
         // for (Entry<AnnotationMirror, AnnotationMirror> entry : unitsAnnotationMirrorMap
         // .entrySet()) {
@@ -493,7 +493,7 @@ public class UnitsRepresentationUtils {
         if (typecheckUnitCache.containsKey(anno)) {
             return typecheckUnitCache.get(anno);
         }
-
+        
         TypecheckUnit unit = new TypecheckUnit();
 
         // if it is a polyunit or rdu annotation, generate top
