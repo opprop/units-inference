@@ -1,0 +1,8 @@
+import units.qual.*;
+
+package java.nio.file;
+
+interface Path {
+	File toFile(@UnknownUnits Path this);
+	File toString(@UnknownUnits Path this);
+}

@@ -17,6 +17,7 @@ CORPUSFILE=$WORKING_DIR/$PROJECTNAME.yml
 ./clean-up-projects.sh $WORKING_DIR/$PROJECTNAME
 
 # Build jar dependency
+: $(update-alternatives --config java <<< 1)
 (cd $UI && ./gradlew jar)
 
 time python $UI/scripts/run-units-typecheck-on-corpus.py --corpus-file $CORPUSFILE

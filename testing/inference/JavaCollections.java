@@ -12,7 +12,7 @@ class JavaCollections {
 
         @m Integer meterOne = new @m Integer(5 * UnitsTools.m);
 
-        // :: fixable-error: (constructor.invocation.invalid)
+        // :: fixable-warning: (cast.unsafe.constructor.invocation)
         @m Integer meterTwo = new @m Integer(5);
 
         // :: fixable-error: (argument.type.incompatible)

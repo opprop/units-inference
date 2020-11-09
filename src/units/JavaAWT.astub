@@ -1,0 +1,8 @@
+import units.qual.*;
+
+package java.awt;
+
+abstract class Graphics2D {
+	abstract void rotate(@rad double theta);
+	abstract void rotate(@rad double theta, double x, double y);
+}

@@ -2,6 +2,7 @@ package units;
 
 import checkers.inference.InferenceAnnotatedTypeFactory;
 import checkers.inference.InferenceChecker;
+import checkers.inference.InferenceMain;
 import checkers.inference.InferenceQualifierHierarchy;
 import checkers.inference.InferenceTreeAnnotator;
 import checkers.inference.InferrableChecker;
@@ -12,14 +13,18 @@ import checkers.inference.model.ConstantSlot;
 import checkers.inference.model.ConstraintManager;
 import checkers.inference.model.Slot;
 import checkers.inference.model.VariableSlot;
+import checkers.inference.qual.VarAnnot;
+import checkers.inference.util.InferenceViewpointAdapter;
 import com.sun.source.tree.BinaryTree;
 import com.sun.source.tree.ExpressionTree;
 import com.sun.source.tree.IdentifierTree;
+import com.sun.source.tree.LiteralTree;
 import com.sun.source.tree.MemberSelectTree;
 import com.sun.source.tree.MethodInvocationTree;
 import com.sun.source.tree.NewClassTree;
 import com.sun.source.tree.Tree;
 import java.lang.annotation.Annotation;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
@@ -40,6 +45,7 @@ import org.checkerframework.framework.type.treeannotator.TreeAnnotator;
 import org.checkerframework.framework.util.AnnotatedTypes;
 import org.checkerframework.framework.util.AnnotationFormatter;
 import org.checkerframework.framework.util.MultiGraphQualifierHierarchy.MultiGraphFactory;
+import org.checkerframework.javacutil.AnnotationBuilder;
 import org.checkerframework.javacutil.AnnotationUtils;
 import org.checkerframework.javacutil.ElementUtils;
 import org.checkerframework.javacutil.Pair;
@@ -89,25 +95,25 @@ public class UnitsInferenceAnnotatedTypeFactory extends InferenceAnnotatedTypeFa
         return new UnitsAnnotationClassLoader(checker);
     }
 
-    // In Inference ATF, this returns the set of real qualifiers
-    @Override
-    protected Set<Class<? extends Annotation>> createSupportedTypeQualifiers() {
-        // get all the loaded annotations
-        Set<Class<? extends Annotation>> qualSet = new HashSet<Class<? extends Annotation>>();
-        // Super grabs all supported qualifiers from the real qualifier hierarchy
-        // and also puts in VarAnnot
-        qualSet.addAll(super.createSupportedTypeQualifiers());
-
-        // System.err.println( " --- quals = " + qualSet );
-
-        // // load all the external units
-        // loadAllExternalUnits();
-        //
-        // // copy all loaded external Units to qual set
-        // qualSet.addAll(externalQualsMap.values());
-
-        return qualSet;
-    }
+//    // In Inference ATF, this returns the set of real qualifiers
+//    @Override
+//    protected Set<Class<? extends Annotation>> createSupportedTypeQualifiers() {
+//        // get all the loaded annotations
+//        Set<Class<? extends Annotation>> qualSet = new HashSet<Class<? extends Annotation>>();
+//        // Super grabs all supported qualifiers from the real qualifier hierarchy
+//        // and also puts in VarAnnot
+//        qualSet.addAll(super.createSupportedTypeQualifiers());
+//
+//        // System.err.println( " --- quals = " + qualSet );
+//
+//        // // load all the external units
+//        // loadAllExternalUnits();
+//        //
+//        // // copy all loaded external Units to qual set
+//        // qualSet.addAll(externalQualsMap.values());
+//
+//        return qualSet;
+//    }
 
     // In Inference ATF, this returns the alias for a given real qualifier
     @Override
@@ -212,6 +218,39 @@ public class UnitsInferenceAnnotatedTypeFactory extends InferenceAnnotatedTypeFa
             bottoms [@checkers.inference.qual.VarAnnot]
             */
         }
+
+        @Override
+        public Set<? extends AnnotationMirror> leastUpperBounds(
+                Collection<? extends AnnotationMirror> annos1,
+                Collection<? extends AnnotationMirror> annos2) {
+            if (InferenceMain.isHackMode(annos1.size() != annos2.size())) {
+                Set<AnnotationMirror> result = AnnotationUtils.createAnnotationSet();
+                for (AnnotationMirror a1 : annos1) {
+                    for (AnnotationMirror a2 : annos2) {
+                        AnnotationMirror lub = leastUpperBound(a1, a2);
+                        if (lub != null) {
+                            result.add(lub);
+                        }
+                    }
+                }
+
+                return result;
+            }
+
+            return super.leastUpperBounds(annos1, annos2);
+        }
+    }
+
+    @Override
+    protected Set<? extends AnnotationMirror> getDefaultTypeDeclarationBounds() {
+        Set<AnnotationMirror> top = new HashSet<>();
+        top.add(unitsRepUtils.TOP);
+        return top;
+    }
+
+    @Override
+    protected InferenceViewpointAdapter createViewpointAdapter() {
+        return new UnitsInferenceViewpointAdapter(this);
     }
 
     @Override
@@ -300,19 +339,8 @@ public class UnitsInferenceAnnotatedTypeFactory extends InferenceAnnotatedTypeFa
     @Override
     public TreeAnnotator createTreeAnnotator() {
         return new ListTreeAnnotator(
-                new UnitsInferenceLiteralTreeAnnotator(),
                 new UnitsInferenceTreeAnnotator(
                         this, realChecker, realTypeFactory, variableAnnotator, slotManager));
-    }
-
-    protected final class UnitsInferenceLiteralTreeAnnotator extends UnitsLiteralTreeAnnotator {
-        // Programmatically set the qualifier implicits
-        public UnitsInferenceLiteralTreeAnnotator() {
-            super(UnitsInferenceAnnotatedTypeFactory.this);
-            // in inference mode, we do not implicitly set dimensionless for the number
-            // literals as we want to treat them as polymorphic. A "cast" is inferred for
-            // each literal
-        }
     }
 
     private final class UnitsInferenceTreeAnnotator extends InferenceTreeAnnotator {
@@ -537,6 +565,35 @@ public class UnitsInferenceAnnotatedTypeFactory extends InferenceAnnotatedTypeFa
             }
 
             return null;
+        }
+
+        @Override
+        public Void visitLiteral(final LiteralTree tree, AnnotatedTypeMirror type) {
+            switch (tree.getKind()) {
+                case NULL_LITERAL:
+                    replaceATM(type, unitsRepUtils.BOTTOM);
+                    return null;
+                case CHAR_LITERAL:
+                    replaceATM(type, unitsRepUtils.DIMENSIONLESS);
+                    return null;
+                case BOOLEAN_LITERAL:
+                    replaceATM(type, unitsRepUtils.DIMENSIONLESS);
+                    return null;
+                case STRING_LITERAL:
+                    replaceATM(type, unitsRepUtils.DIMENSIONLESS);
+                    return null;
+                default:
+                    return super.visitLiteral(tree, type);
+            }
+        }
+
+        private void replaceATM(AnnotatedTypeMirror atm, AnnotationMirror am) {
+            final ConstantSlot cs = slotManager.createConstantSlot(am);
+            AnnotationBuilder ab =
+                    new AnnotationBuilder(realTypeFactory.getProcessingEnv(), VarAnnot.class);
+            ab.setValue("value", cs.getId());
+            atm.clearAnnotations();
+            atm.replaceAnnotation(ab.build());
         }
     }
 

@@ -21,6 +21,7 @@ if [ ! -d ../do-like-javac ] ; then
 fi
 
 # Build CFI Test Lib jar
+: $(update-alternatives --config java <<< 2)
 (cd $JSR308/checker-framework-inference && ./gradlew testLibJar)
 
 # Running test suite

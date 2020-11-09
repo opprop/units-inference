@@ -1,0 +1,7 @@
+import units.qual.*;
+
+package daikon.plumelib.bcelutil;
+
+final class SimpleLog {
+    void log(@UnknownUnits String s, @UnknownUnits Object... obj);
+}

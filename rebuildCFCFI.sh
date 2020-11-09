@@ -1,7 +1,9 @@
 #!/bin/bash
 
+: $(update-alternatives --config java <<< 2)
+
 echo "Rebuilding CF"
-(cd $CF; gradle assemble jar)
+(cd ../checker-framework && git pull && ./gradlew assemble)
 
 echo "Rebuilding CFI"
-(cd $CFI; gradle dist jar dependenciesJar testLibJar)
+(cd ../checker-framework-inference && git pull && ./gradlew dependenciesJar dist)

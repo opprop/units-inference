@@ -26,6 +26,7 @@ import units.UnitsAnnotatedTypeFactory;
 import units.qual.BUC;
 import units.qual.Dimensionless;
 import units.qual.PolyUnit;
+import units.qual.RDU;
 import units.qual.UnitsAlias;
 import units.qual.UnitsBottom;
 import units.qual.UnitsRep;
@@ -64,6 +65,8 @@ public class UnitsRepresentationUtils {
 
     public AnnotationMirror SURFACE_BOTTOM;
 
+    public AnnotationMirror RECEIVER_DEPENDANT_UNIT;
+
     // /** Instance of {@link VarAnnot} for use in UnitsVisitor in infer mode. */
     // public AnnotationMirror VARANNOT;
 
@@ -73,7 +76,7 @@ public class UnitsRepresentationUtils {
      * Instances of time units for use with various time APIs, used by {@link
      * UnitsAnnotatedTypeFactory#UnitsImplicitsTreeAnnotator}
      */
-    public AnnotationMirror SECOND, MILLISECOND, MICROSECOND, NANOSECOND;
+//    public AnnotationMirror SECOND, MILLISECOND, MICROSECOND, NANOSECOND;
 
     // Comparator used to sort annotation classes by their simple class name
     private static Comparator<Class<? extends Annotation>> annoClassComparator =
@@ -212,6 +215,8 @@ public class UnitsRepresentationUtils {
 
         RAWUNITSREP = AnnotationBuilder.fromClass(elements, UnitsRep.class);
 
+        RECEIVER_DEPENDANT_UNIT = AnnotationBuilder.fromClass(elements, RDU.class);
+
         Map<String, Integer> zeroBaseDimensions = createZeroFilledBaseUnitsMap();
         TOP = createInternalUnit(true, false, 0, zeroBaseDimensions);
         BOTTOM = createInternalUnit(false, true, 0, zeroBaseDimensions);
@@ -244,13 +249,13 @@ public class UnitsRepresentationUtils {
 
         SURFACE_TOP = AnnotationBuilder.fromClass(elements, UnknownUnits.class);
         SURFACE_BOTTOM = AnnotationBuilder.fromClass(elements, UnitsBottom.class);
-
-        Map<String, Integer> secondBaseMap = createZeroFilledBaseUnitsMap();
-        secondBaseMap.put("s", 1);
-        SECOND = createInternalUnit(false, false, 0, secondBaseMap);
-        MILLISECOND = createInternalUnit(false, false, -3, secondBaseMap);
-        MICROSECOND = createInternalUnit(false, false, -6, secondBaseMap);
-        NANOSECOND = createInternalUnit(false, false, -9, secondBaseMap);
+//
+//        Map<String, Integer> secondBaseMap = createZeroFilledBaseUnitsMap();
+//        secondBaseMap.put("s", 1);
+//        SECOND = createInternalUnit(false, false, 0, secondBaseMap);
+//        MILLISECOND = createInternalUnit(false, false, -3, secondBaseMap);
+//        MICROSECOND = createInternalUnit(false, false, -6, secondBaseMap);
+//        NANOSECOND = createInternalUnit(false, false, -9, secondBaseMap);
 
         // for (Entry<AnnotationMirror, AnnotationMirror> entry : unitsAnnotationMirrorMap
         // .entrySet()) {
@@ -488,11 +493,13 @@ public class UnitsRepresentationUtils {
         if (typecheckUnitCache.containsKey(anno)) {
             return typecheckUnitCache.get(anno);
         }
-
+        
         TypecheckUnit unit = new TypecheckUnit();
 
-        // if it is a polyunit annotation, generate top
+        // if it is a polyunit or rdu annotation, generate top
         if (AnnotationUtils.areSameByClass(anno, PolyUnit.class)) {
+            unit.setUnknownUnits(true);
+        } else if (AnnotationUtils.areSameByClass(anno, RDU.class)) {
             unit.setUnknownUnits(true);
         }
         // if it is a units internal annotation, generate the internal unit

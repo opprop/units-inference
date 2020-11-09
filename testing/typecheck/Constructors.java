@@ -21,13 +21,13 @@ class Constructors {
 
         PolyUnitClass puc2 = new PolyUnitClass(5 * UnitsTools.m);
 
-        // :: error: (constructor.invocation.invalid)
+        // :: warning: (cast.unsafe.constructor.invocation)
         PolyUnitClass puc3 = new @m PolyUnitClass(5);
 
-        // :: error: (constructor.invocation.invalid)
+        // :: warning: (cast.unsafe.constructor.invocation)
         @m PolyUnitClass puc4 = new @m PolyUnitClass(5);
 
-        // :: error: (constructor.invocation.invalid)
+        // :: warning: (cast.unsafe.constructor.invocation)
         PolyUnitClass puc5 = new @m PolyUnitClass(5 * UnitsTools.s);
     }
 

@@ -1,7 +1,7 @@
 /// Why doesn't this work on Travis under Java 7?
 /// The same text does in Randoop's build.gradle file.
 plugins {
-    id 'com.github.johnrengelman.shadow' version '6.0.0'
+    id 'com.github.johnrengelman.shadow' version '2.0.4'
 }
 
 apply plugin: 'java'
@@ -12,7 +12,6 @@ repositories {
 }
 
 ext {
-    assert JavaVersion.current() == JavaVersion.VERSION_1_8: "Set JAVA_HOME to JDK 8. Current version is ${JavaVersion.current()}"
     jsr308 = System.getenv('JSR308') ?: file(new File("..")).absolutePath
     cf = "${jsr308}/checker-framework"
     cfi = "${jsr308}/checker-framework-inference"

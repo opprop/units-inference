@@ -46,7 +46,7 @@ class Variables {
         @m Integer implicitValueOfCall = 10;
         // :: fixable-error: (assignment.type.incompatible)
         @m Integer explicitValueOfCall = Integer.valueOf(10);
-        // :: fixable-error: (constructor.invocation.invalid)
+        // :: fixable-warning: (cast.unsafe.constructor.invocation)
         @m Integer omittingConstructorArgType = new @m Integer(10);
         @m Integer omittingConstructorReturnType = new Integer(10 * UnitsTools.m);
         // :: fixable-error: (assignment.type.incompatible)

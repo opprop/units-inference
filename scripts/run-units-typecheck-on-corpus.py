@@ -8,6 +8,7 @@ import time
 SCRIPTS_DIR = os.path.dirname(os.path.realpath(__file__))
 UNITS_INFERENCE_DIR = os.path.join(SCRIPTS_DIR, "..")
 tool_excutable = os.path.join(SCRIPTS_DIR, "run-dljc-typecheck.sh")
+LOG_FILENAME = "typecheckTiming.log"
 
 def main(argv):
     parser = argparse.ArgumentParser()
@@ -51,6 +52,10 @@ def main(argv):
     for project_name, project_attrs in projects.iteritems():
         project_dir = os.path.join(BENCHMARK_DIR, project_name)
         os.chdir(project_dir)
+        log_file = os.path.join(project_dir, LOG_FILENAME)
+
+        print("Timing log: {}".format(log_file))
+
         print "Enter directory: {}".format(project_dir)
         if project_attrs["clean"] == '' or project_attrs["build"] == '':
             print "Skip project {}, as there were no build/clean cmd.".format(project_name)
@@ -62,7 +67,8 @@ def main(argv):
         rtn_code = subprocess.call([tool_excutable, project_attrs["build"]])
         end = time.time()
         print "Return code is {}.".format(rtn_code)
-        print "Time taken by {}: \t{}\t seconds".format(project_name, end - start)
+        with open(log_file, "w") as log:
+            log.write("Time taken by {}: \t{}\t seconds".format(project_name, end - start))
         if not rtn_code == 0:
             failed_projects.append(project_name)
         else:
