@@ -23,3 +23,13 @@ class Random implements Serializable {
     Random(@UnknownUnits long arg0);
     void setSeed(@UnknownUnits long arg0);
 }
+
+class Arrays {
+    static void fill(@UnknownUnits int[] a, @UnknownUnits int val);
+    static void fill(@UnknownUnits short[] a, @UnknownUnits short val);
+    static void fill(@UnknownUnits long[] a, @UnknownUnits long val);
+    static void fill(@UnknownUnits float[] a, @UnknownUnits float val);
+    static void fill(@UnknownUnits double[] a, @UnknownUnits double val);
+    static String deepToString(@UnknownUnits Object[] a);
+}
+

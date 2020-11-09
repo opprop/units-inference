@@ -11,6 +11,7 @@ import org.checkerframework.javacutil.BugInCF;
 public class TypecheckUnit {
     private boolean uu;
     private boolean ub;
+    private boolean rdu;
     private int prefixExponent;
     // Tree map maintaining sorted order on base unit names
     private final Map<String, Integer> exponents;
@@ -20,6 +21,8 @@ public class TypecheckUnit {
         uu = false;
         // default UU value is false
         ub = false;
+        // default UU value is false
+        rdu = false;
         // default prefixExponent is 0
         prefixExponent = 0;
         // default exponents are 0
@@ -42,6 +45,15 @@ public class TypecheckUnit {
 
     public boolean isUnitsBottom() {
         return ub;
+    }
+
+    public void setRDUnits(boolean val) {
+        rdu = val;
+        assert !(uu && ub);
+    }
+
+    public boolean isRDUnits() {
+        return rdu;
     }
 
     public void setPrefixExponent(int exp) {

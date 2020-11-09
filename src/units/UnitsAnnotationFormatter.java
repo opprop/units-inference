@@ -44,6 +44,7 @@ public class UnitsAnnotationFormatter extends DefaultAnnotationFormatter {
             VariableElement ve = (VariableElement) val;
             sb.append(ve.getEnclosingElement().getSimpleName() + "." + ve.getSimpleName());
         } else if (val instanceof AnnotationMirror) {
+            sb.append(av.toString());
             // this is the new case added
             // if the argument is an AnnotationMirror, then recursively format the AnnotationMirror
             formatAnnotationMirror((AnnotationMirror) val, sb);

@@ -1,0 +1,7 @@
+import units.qual.*;
+
+package org.apache.commons.exec;
+
+class ExecuteWatchdog {
+	ExecuteWatchdog(@ms long timeout);
+}

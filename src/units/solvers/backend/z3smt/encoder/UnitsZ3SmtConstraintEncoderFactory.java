@@ -63,7 +63,7 @@ public class UnitsZ3SmtConstraintEncoderFactory
 
     @Override
     public CombineConstraintEncoder<BoolExpr> createCombineConstraintEncoder() {
-        return null;
+        return new UnitsZ3SmtCombineConstraintEncoder(lattice, ctx, formatTranslator);
     }
 
     @Override

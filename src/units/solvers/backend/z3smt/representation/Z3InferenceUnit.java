@@ -19,6 +19,7 @@ public class Z3InferenceUnit {
 
     private BoolExpr uu;
     private BoolExpr ub;
+    private BoolExpr rdu;
     private IntExpr prefixExponent;
     // Tree map maintaining sorted order on base unit names
     private final Map<String, IntExpr> exponents;
@@ -40,6 +41,8 @@ public class Z3InferenceUnit {
         slot.uu = ctx.mkBool(false);
         // default UU value is false
         slot.ub = ctx.mkBool(false);
+        // default UU value is false
+        slot.rdu = ctx.mkBool(false);
         // default prefixExponent is 0
         slot.prefixExponent = slot.intZero;
 
@@ -67,6 +70,8 @@ public class Z3InferenceUnit {
                         UnitsZ3SmtEncoderUtils.z3VarName(
                                 slotID, UnitsZ3SmtEncoderUtils.prefixSlotName));
 
+        slot.rdu = ctx.mkBool(false);
+
         for (String baseUnit : UnitsRepresentationUtils.getInstance().serializableBaseUnits()) {
             slot.exponents.put(
                     baseUnit, ctx.mkIntConst(UnitsZ3SmtEncoderUtils.z3VarName(slotID, baseUnit)));
@@ -89,6 +94,14 @@ public class Z3InferenceUnit {
 
     public BoolExpr getUnitsBottom() {
         return ub;
+    }
+
+    public void setRDUnits(boolean val) {
+        rdu = ctx.mkBool(val);
+    }
+
+    public BoolExpr getRDUnits() {
+        return rdu;
     }
 
     public void setPrefixExponent(int exp) {

@@ -28,4 +28,32 @@ class JavaUtilConcurrentTimeUnit {
 
         @ns long nanosec = ns.convert(10L, TimeUnit.DAYS);
     }
+
+    void testParams() {
+        TimeUnit s_unit = TimeUnit.SECONDS;
+        TimeUnit ns_unit = NANOSECONDS;
+
+        long ns = 1000;
+        long s = 1000;
+
+        // :: fixable-error: (argument.type.incompatible)
+        TimeUnit.SECONDS.toMillis(s);
+        // :: fixable-error: (argument.type.incompatible)
+        TimeUnit.NANOSECONDS.toMillis(ns);
+
+        // :: fixable-error: (argument.type.incompatible)
+        ns_unit.toMillis(ns);
+        // :: fixable-error: (argument.type.incompatible)
+        s_unit.toMillis(s);
+    }
+
+    void testReturn(long s1, long s2) {
+        TimeUnit s = TimeUnit.SECONDS;
+        TimeUnit ms = TimeUnit.MILLISECONDS;
+
+        // :: fixable-error: (assignment.type.incompatible)
+        s1 = s.convert(10L, NANOSECONDS);
+        // :: fixable-error: (assignment.type.incompatible)
+        s2 = TimeUnit.SECONDS.convert(10L, NANOSECONDS);
+    }
 }

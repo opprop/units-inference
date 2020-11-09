@@ -26,6 +26,7 @@ import units.UnitsAnnotatedTypeFactory;
 import units.qual.BUC;
 import units.qual.Dimensionless;
 import units.qual.PolyUnit;
+import units.qual.RDU;
 import units.qual.UnitsAlias;
 import units.qual.UnitsBottom;
 import units.qual.UnitsRep;
@@ -63,6 +64,8 @@ public class UnitsRepresentationUtils {
     public AnnotationMirror SURFACE_TOP;
 
     public AnnotationMirror SURFACE_BOTTOM;
+
+    public AnnotationMirror RECEIVER_DEPENDANT_UNIT;
 
     // /** Instance of {@link VarAnnot} for use in UnitsVisitor in infer mode. */
     // public AnnotationMirror VARANNOT;
@@ -211,6 +214,8 @@ public class UnitsRepresentationUtils {
         POLYUNIT = AnnotationBuilder.fromClass(elements, PolyUnit.class);
 
         RAWUNITSREP = AnnotationBuilder.fromClass(elements, UnitsRep.class);
+
+        RECEIVER_DEPENDANT_UNIT = AnnotationBuilder.fromClass(elements, RDU.class);
 
         Map<String, Integer> zeroBaseDimensions = createZeroFilledBaseUnitsMap();
         TOP = createInternalUnit(true, false, 0, zeroBaseDimensions);
@@ -494,6 +499,8 @@ public class UnitsRepresentationUtils {
         // if it is a polyunit annotation, generate top
         if (AnnotationUtils.areSameByClass(anno, PolyUnit.class)) {
             unit.setUnknownUnits(true);
+        } else if (AnnotationUtils.areSameByClass(anno, RDU.class)) {
+            unit.setRDUnits(true);
         }
         // if it is a units internal annotation, generate the internal unit
         else if (AnnotationUtils.areSameByClass(anno, UnitsRep.class)) {

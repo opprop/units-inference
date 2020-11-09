@@ -20,7 +20,7 @@ export LD_LIBRARY_PATH=$CFI_LIB
 
 CHECKER=units.UnitsChecker
 SOLVER=units.solvers.backend.UnitsSolverEngine
-# DEBUG_SOLVER=checkers.inference.solver.DebugSolver
+DEBUG_SOLVER=checkers.inference.solver.DebugSolver
 
 OPTIMIZINGMODE=$1
 shift
@@ -45,14 +45,14 @@ infer_cmd="python $DLJC/dljc -t inference --guess --crashExit \
 -o logs -m ROUNDTRIP -afud $WORKING_DIR/annotated -- $build_cmd "
 
 # debug_onlyCompile="--onlyCompileBytecodeBase true"
-# TODO:see how ontology uses testminimizer
-# debug_cmd="python $DLJC/dljc -t testminimizer --annotationClassPath $UIPATH \
-# $debug_onlyCompile --expectOutputRegex 'Unsatisfiable' --checker $CHECKER \
-# --solver $DEBUG_SOLVER --solverArgs=$SOLVERARGS \
-# -o logs -m INFER -afud $WORKING_DIR/annotated -- $build_cmd "
-debug_cmd="python $DLJC/dljc -t inference --guess --crashExit \
---checker $CHECKER --solver $DEBUG_SOLVER --solverArgs=$SOLVERARGS \
+debug_cmd="python $DLJC/dljc -t testminimizer --annotationClassPath $UIPATH \
+$debug_onlyCompile --expectOutputRegex 'Unsat Constraints' --checker $CHECKER \
+--solver $DEBUG_SOLVER --solverArgs=$SOLVERARGS \
 -o logs -m ROUNDTRIP -afud $WORKING_DIR/annotated -- $build_cmd "
+
+# debug_cmd="python $DLJC/dljc -t inference --guess --crashExit \
+# --checker $CHECKER --solver $DEBUG_SOLVER --solverArgs=$SOLVERARGS \
+# -o logs -m ROUNDTRIP -afud $WORKING_DIR/annotated -- $build_cmd "
 
 running_cmd=$infer_cmd
 

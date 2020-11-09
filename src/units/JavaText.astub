@@ -1,0 +1,10 @@
+import units.qual.*;
+
+package java.text;
+
+class NumberFormat {
+    String format(@UnknownUnits long number);
+    abstract StrinBuffer format(@UnknownUnits long number, StringBuffer toAppendTo, FieldPosition pos);
+    String format(@UnknownUnits double number);
+    abstract StrinBuffer format(@UnknownUnits double number, StringBuffer toAppendTo, FieldPosition pos);
+}

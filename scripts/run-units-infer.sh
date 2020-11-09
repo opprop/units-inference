@@ -24,7 +24,7 @@ fi
 
 IS_HACK=true
 
-export CLASSPATH=$UIPATH:.
+export CLASSPATH=$UIPATH:/home/txiang/jsr308-inference/checker-framework/checker/dist/checker.jar:/home/txiang/jsr308-inference/units-inference/benchmarks/projects/daikon/java/lib/units-inference.jar:/home/txiang/jsr308-inference/units-inference/benchmarks/projects/daikon/java/lib/checker-framework-inference.jar:/home/txiang/jsr308-inference/units-inference/benchmarks/projects/daikon/java/lib/*:/home/txiang/jsr308-inference/units-inference/benchmarks/projects/daikon/java:/usr/lib/jvm/java-8-openjdk-amd64/lib/tools.jar:/usr/lib/jvm/java-8-openjdk-amd64/jre/lib/rt.jar
 export external_checker_classpath=$UIPATH
 
 # NOTE: ROUNDTRIP mode actually writes out files to annotated, INFER mode only

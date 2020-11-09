@@ -19,7 +19,9 @@ import org.checkerframework.framework.type.AnnotatedTypeMirror;
 import org.checkerframework.framework.type.AnnotationClassLoader;
 import org.checkerframework.framework.type.DefaultAnnotatedTypeFormatter;
 import org.checkerframework.framework.type.QualifierHierarchy;
+import org.checkerframework.framework.type.ViewpointAdapter;
 import org.checkerframework.framework.type.treeannotator.ListTreeAnnotator;
+import org.checkerframework.framework.type.treeannotator.LiteralTreeAnnotator;
 import org.checkerframework.framework.type.treeannotator.PropagationTreeAnnotator;
 import org.checkerframework.framework.type.treeannotator.TreeAnnotator;
 import org.checkerframework.framework.type.typeannotator.DefaultForTypeAnnotator;
@@ -80,6 +82,11 @@ public class UnitsAnnotatedTypeFactory extends BaseAnnotatedTypeFactory {
     }
 
     @Override
+    protected ViewpointAdapter createViewpointAdapter() {
+        return new UnitsViewpointAdapter(this);
+    }
+
+    @Override
     public AnnotationMirror canonicalAnnotation(AnnotationMirror anno) {
         // check to see if it is an internal units annotation
         if (AnnotationUtils.areSameByClass(anno, UnitsRep.class)) {
@@ -111,7 +118,7 @@ public class UnitsAnnotatedTypeFactory extends BaseAnnotatedTypeFactory {
     @Override
     public boolean isSupportedQualifier(AnnotationMirror anno) {
         /*
-         * getQualifierHierarchy().getTypeQualifiers() contains PolyAll, PolyUnit, and the AMs of
+         * getQualifierHierarchy().getTypeQualifiers() contains PolyUnit, and the AMs of
          * Top and Bottom. We need to check all other instances of @UnitsRep AMs that are
          * supported qualifiers here.
          */
@@ -121,8 +128,8 @@ public class UnitsAnnotatedTypeFactory extends BaseAnnotatedTypeFactory {
         if (AnnotationUtils.areSameByClass(anno, UnitsRep.class)) {
             return unitsRepUtils.hasAllBaseUnits(anno);
         }
-        // Anno is PolyAll, PolyUnit
-        return AnnotationUtils.containsSame(this.getQualifierHierarchy().getTypeQualifiers(), anno);
+        // Anno is PolyUnit
+        return getSupportedTypeQualifierNames().contains(anno.toString());
     }
 
     // Programmatically set the qualifier defaults
@@ -135,7 +142,8 @@ public class UnitsAnnotatedTypeFactory extends BaseAnnotatedTypeFactory {
         // defs.addCheckedCodeDefault(unitsRepUtils.DIMENSIONLESS, TypeUseLocation.UPPER_BOUND);
         defs.addCheckedCodeDefault(
                 unitsRepUtils.DIMENSIONLESS, TypeUseLocation.EXPLICIT_UPPER_BOUND);
-        defs.addCheckedCodeDefault(unitsRepUtils.TOP, TypeUseLocation.IMPLICIT_UPPER_BOUND);
+        defs.addCheckedCodeDefault(
+                unitsRepUtils.DIMENSIONLESS, TypeUseLocation.IMPLICIT_UPPER_BOUND);
         // defaults for lower bounds is BOTTOM, individual bounds can be manually set
         defs.addCheckedCodeDefault(unitsRepUtils.BOTTOM, TypeUseLocation.LOWER_BOUND);
         // exceptions are always dimensionless
@@ -239,6 +247,7 @@ public class UnitsAnnotatedTypeFactory extends BaseAnnotatedTypeFactory {
 
             // Update tops
             tops.remove(unitsRepUtils.RAWUNITSREP);
+            tops.remove(unitsRepUtils.RECEIVER_DEPENDANT_UNIT);
             tops.add(unitsRepUtils.TOP);
 
             // System.err.println(" === Typecheck ATF ");
@@ -284,6 +293,14 @@ public class UnitsAnnotatedTypeFactory extends BaseAnnotatedTypeFactory {
                 return true;
             }
 
+            // Case: @RDU shouldn't appear. throw error?
+            if (AnnotationUtils.areSame(subAnno, unitsRepUtils.RECEIVER_DEPENDANT_UNIT)) {
+                return isSubtype(unitsRepUtils.TOP, superAnno);
+            }
+            if (AnnotationUtils.areSame(superAnno, unitsRepUtils.RECEIVER_DEPENDANT_UNIT)) {
+                return true;
+            }
+
             // Case: @UnitsRep(x) <: @UnitsRep(y)
             if (AnnotationUtils.areSameByClass(subAnno, UnitsRep.class)
                     && AnnotationUtils.areSameByClass(superAnno, UnitsRep.class)) {
@@ -312,13 +329,18 @@ public class UnitsAnnotatedTypeFactory extends BaseAnnotatedTypeFactory {
     @Override
     public TreeAnnotator createTreeAnnotator() {
         return new ListTreeAnnotator(
-                new UnitsTypecheckLiteralTreeAnnotator(), new UnitsPropagationTreeAnnotator());
+                new UnitsLiteralTreeAnnotator(this), new UnitsPropagationTreeAnnotator());
     }
 
-    protected final class UnitsTypecheckLiteralTreeAnnotator extends UnitsLiteralTreeAnnotator {
+    protected final class UnitsLiteralTreeAnnotator extends LiteralTreeAnnotator {
         // Programmatically set the qualifier implicits
-        public UnitsTypecheckLiteralTreeAnnotator() {
-            super(UnitsAnnotatedTypeFactory.this);
+        public UnitsLiteralTreeAnnotator(AnnotatedTypeFactory atf) {
+            super(atf);
+            // set BOTTOM as the literal qualifier for null literals
+            addLiteralKind(LiteralKind.NULL, unitsRepUtils.BOTTOM);
+            addLiteralKind(LiteralKind.STRING, unitsRepUtils.DIMENSIONLESS);
+            addLiteralKind(LiteralKind.CHAR, unitsRepUtils.DIMENSIONLESS);
+            addLiteralKind(LiteralKind.BOOLEAN, unitsRepUtils.DIMENSIONLESS);
             // in type checking mode, we also set dimensionless for the number literals
             addLiteralKind(LiteralKind.INT, unitsRepUtils.DIMENSIONLESS);
             addLiteralKind(LiteralKind.LONG, unitsRepUtils.DIMENSIONLESS);

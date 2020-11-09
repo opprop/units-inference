@@ -124,7 +124,7 @@ def main(argv):
 
     projects = None
     with open (os.path.join(UNITS_INFERENCE_DIR, "benchmarks", args.corpus_file)) as projects_file:
-        projects = yaml.load(projects_file)["projects"]
+        projects = yaml.load(projects_file)["paper"]
 
     for project_name, project_attrs in projects.iteritems():
         project_dir = os.path.join(BENCHMARK_DIR, project_name)

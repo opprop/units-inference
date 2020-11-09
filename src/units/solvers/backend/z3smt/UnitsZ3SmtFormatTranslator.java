@@ -60,6 +60,7 @@ public class UnitsZ3SmtFormatTranslator
 
         slotDeclaration.add(addZ3BoolDefinition(encodedSlot.getUnknownUnits()));
         slotDeclaration.add(addZ3BoolDefinition(encodedSlot.getUnitsBottom()));
+        slotDeclaration.add(addZ3BoolDefinition(encodedSlot.getRDUnits()));
 
         if (unitsRepUtils.serializePrefix()) {
             slotDeclaration.add(addZ3IntDefinition(encodedSlot.getPrefixExponent()));
@@ -138,6 +139,8 @@ public class UnitsZ3SmtFormatTranslator
             encodedSlot.setUnknownUnits(true);
         } else if (unit.isUnitsBottom()) {
             encodedSlot.setUnitsBottom(true);
+        } else if (unit.isRDUnits()) {
+            encodedSlot.setRDUnits(true);
         } else {
             encodedSlot.setPrefixExponent(unit.getPrefixExponent());
             for (String bu : unitsRepUtils.serializableBaseUnits()) {
@@ -166,31 +169,35 @@ public class UnitsZ3SmtFormatTranslator
 
     @Override
     public BoolExpr encodeSlotWellformnessConstraint(VariableSlot slot) {
+        Z3InferenceUnit serializedSlot = slot.serialize(this);
         if (slot instanceof ConstantSlot) {
             ConstantSlot cs = (ConstantSlot) slot;
             AnnotationMirror anno = cs.getValue();
-            // encode PolyAll and PolyUnit as constant trues
+            // encode PolyUnit as constant trues
             if (AnnotationUtils.areSame(anno, unitsRepUtils.POLYUNIT)) {
                 return ctx.mkTrue();
             }
+            if (AnnotationUtils.areSame(anno, unitsRepUtils.RECEIVER_DEPENDANT_UNIT)) {
+                return serializedSlot.getRDUnits();
+            }
         }
-
-        Z3InferenceUnit serializedSlot = slot.serialize(this);
         return UnitsZ3SmtEncoderUtils.slotWellformedness(ctx, serializedSlot);
     }
 
     @Override
     public BoolExpr encodeSlotPreferenceConstraint(VariableSlot slot) {
+        Z3InferenceUnit serializedSlot = slot.serialize(this);
         if (slot instanceof ConstantSlot) {
             ConstantSlot cs = (ConstantSlot) slot;
             AnnotationMirror anno = cs.getValue();
-            // encode PolyAll and PolyUnit as constant trues
+            // encode PolyUnit as constant trues
             if (AnnotationUtils.areSame(anno, unitsRepUtils.POLYUNIT)) {
                 return ctx.mkTrue();
             }
+            if (AnnotationUtils.areSame(anno, unitsRepUtils.RECEIVER_DEPENDANT_UNIT)) {
+                return serializedSlot.getRDUnits();
+            }
         }
-
-        Z3InferenceUnit serializedSlot = slot.serialize(this);
         return UnitsZ3SmtEncoderUtils.slotPreference(ctx, serializedSlot);
     }
 

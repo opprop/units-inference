@@ -34,6 +34,6 @@ class UnitsToolsConstants {
     void test2() {
         uu = UnitsTools.top;
         bot = UnitsTools.bottom;
-        dim = UnitsTools.dimensionless;
+        dim = UnitsTools.one;
     }
 }

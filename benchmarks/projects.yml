@@ -69,6 +69,12 @@ projects:
     build: mvn -B -DskipTests compile
     clean: mvn -B clean
 
+  # unsat, rerun with no stub for raw performance
+  josm:
+    giturl: https://github.com/txiang61-benchmarks/josm.git
+    build: ant compile
+    clean: ant clean
+
 # large size projects
   # crashes in CFI
   # spring-framework: #620859 LOC Java, requires gradle 4.10.3
@@ -80,6 +86,12 @@ projects:
   # sis:
   #   giturl: https://github.com/jyluo-benchmarks/sis.git
   #   build: mvn -B -DskipTests compile -DskipTests
+  #   clean: mvn -B clean
+
+  # Converted to use units
+  # GasFlow:
+  #   giturl: https://github.com/txiang61-benchmarks/GasFlow.git
+  #   build: ant jar
   #   clean: mvn -B clean
 
 # Future test:
@@ -96,3 +108,8 @@ projects:
   #   giturl: https://github.com/jyluo-benchmarks/Facer.git
   #   build: ant
   #   clean: ant clean
+
+  # commons-math:
+  # giturl: https://github.com/txiang61-benchmarks/commons-math.git
+  # build: mvn install -Drat.numUnapprovedLicenses=100
+  # clean: mvn -B clean
