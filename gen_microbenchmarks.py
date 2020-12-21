@@ -119,8 +119,8 @@ def generate_file(mult = 0, mult_groups = 1, mult_end = False, mult_perline = Fa
         base_units = ['m', 'g', 's', 'mPERs', 'mol', 'gPERmol', 'm2s2']
         
         if mult_groups * mult > 0:
-            # arbitrarily annotate the end as meters, whether inference is successful does not matter
-            end_annotation = 'm' if mult_end else None
+            # arbitrarily annotate the end as mol, whether inference is successful does not matter
+            end_annotation = 'mol' if mult_end else None
             for i in range(mult_groups):
                 code += format_tabs('// A group of {} multiplications\n'.format(mult))
                 code += gen_op_sequence('*', mult, mult_annot, base_units, mult_perline, not mult_nocorrection, end_annotation = end_annotation)
