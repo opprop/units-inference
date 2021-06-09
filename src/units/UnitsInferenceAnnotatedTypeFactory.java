@@ -12,6 +12,7 @@ import checkers.inference.model.AnnotationLocation;
 import checkers.inference.model.ConstantSlot;
 import checkers.inference.model.ConstraintManager;
 import checkers.inference.model.Slot;
+import checkers.inference.model.SourceVariableSlot;
 import checkers.inference.model.VariableSlot;
 import checkers.inference.qual.VarAnnot;
 import checkers.inference.util.InferenceViewpointAdapter;
@@ -283,12 +284,12 @@ public class UnitsInferenceAnnotatedTypeFactory extends InferenceAnnotatedTypeFa
                         inferenceTypeFactory.getAnnotatedType(binaryTree.getLeftOperand());
                 AnnotatedTypeMirror rhsATM =
                         inferenceTypeFactory.getAnnotatedType(binaryTree.getRightOperand());
-                VariableSlot lhs = slotManager.getVariableSlot(lhsATM);
-                VariableSlot rhs = slotManager.getVariableSlot(rhsATM);
+                Slot lhs = slotManager.getSlot(lhsATM);
+                Slot rhs = slotManager.getSlot(rhsATM);
 
                 // create varslot for the result of the binary tree computation
                 // note: constraints for binary ops are added in UnitsVisitor
-                VariableSlot result;
+                Slot result;
                 switch (binaryTree.getKind()) {
                     case PLUS:
                         // if it is a string concatenation, result is dimensionless
@@ -329,8 +330,8 @@ public class UnitsInferenceAnnotatedTypeFactory extends InferenceAnnotatedTypeFa
                 // add to cache
                 Set<AnnotationMirror> resultSet = AnnotationUtils.createAnnotationSet();
                 resultSet.add(resultAM);
-                final Pair<VariableSlot, Set<? extends AnnotationMirror>> varATMPair =
-                        Pair.of(slotManager.getVariableSlot(atm), resultSet);
+                final Pair<Slot, Set<? extends AnnotationMirror>> varATMPair =
+                        Pair.of(slotManager.getSlot(atm), resultSet);
                 treeToVarAnnoPair.put(binaryTree, varATMPair);
             }
         }
@@ -410,16 +411,16 @@ public class UnitsInferenceAnnotatedTypeFactory extends InferenceAnnotatedTypeFa
                     // if member is from source code, it must be unannotated
                     // if member is from byte code, it must not be annotated with a
                     // non-dimensionless unit
-                    if ((!fromByteCode && slot.isVariable())
+                    if ((!fromByteCode && slot instanceof VariableSlot)
                             || (fromByteCode
-                                    && slot.isConstant()
+                                    && slot instanceof ConstantSlot
                                     && AnnotationUtils.areSame(
                                             ((ConstantSlot) slot).getValue(),
                                             unitsRepUtils.DIMENSIONLESS))) {
                         // Generate a fresh variable for inference
                         AnnotationLocation loc =
                                 VariableAnnotator.treeToLocation(atypeFactory, tree);
-                        VariableSlot varSlot = slotManager.createVariableSlot(loc);
+                        SourceVariableSlot varSlot = slotManager.createSourceVariableSlot(loc, TreeUtils.typeOf(tree));
                         atm.replaceAnnotation(slotManager.getAnnotation(varSlot));
                     }
                 }
@@ -432,7 +433,7 @@ public class UnitsInferenceAnnotatedTypeFactory extends InferenceAnnotatedTypeFa
         // @PolyAll
         private boolean isPolyAnnotation(AnnotationMirror annot) {
             Slot slot = slotManager.getSlot(annot);
-            if (slot.isConstant()) {
+            if (slot instanceof ConstantSlot) {
                 AnnotationMirror constant = ((ConstantSlot) slot).getValue();
                 return InferenceQualifierHierarchy.isPolymorphic(constant);
             }
@@ -530,13 +531,13 @@ public class UnitsInferenceAnnotatedTypeFactory extends InferenceAnnotatedTypeFa
                 // "@Poly Clazz(@Poly param)" we have the following annotations:
 
                 // 1) the variable slot generated for the polymorphic declared return type
-                VariableSlot varSlotForPolyReturn =
+                SourceVariableSlot varSlotForPolyReturn =
                         variableAnnotator.getOrCreatePolyVar(newClassTree);
                 // disable insertion of polymorphic return variable slot
                 varSlotForPolyReturn.setInsertable(false);
 
                 // 2) the call site return type: "@m" in "new @m Clazz(...)"
-                VariableSlot callSiteReturnVarSlot = slotManager.getVariableSlot(atm);
+                Slot callSiteReturnVarSlot = slotManager.getSlot(atm);
 
                 // Create a subtype constraint: callSiteReturnVarSlot <: varSlotForPolyReturn
                 // since after annotation insertion, the varSlotForPolyReturn is conceptually a
@@ -558,7 +559,7 @@ public class UnitsInferenceAnnotatedTypeFactory extends InferenceAnnotatedTypeFa
             super.visitMethodInvocation(methodInvocationTree, atm);
 
             if (isMethodDeclaredWithPolymorphicReturn(methodInvocationTree)) {
-                VariableSlot varSlotForPolyReturn =
+                SourceVariableSlot varSlotForPolyReturn =
                         variableAnnotator.getOrCreatePolyVar(methodInvocationTree);
                 // disable insertion of polymorphic return variable slot
                 varSlotForPolyReturn.setInsertable(false);

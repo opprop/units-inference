@@ -2,6 +2,7 @@ package units.solvers.backend.z3smt.encoder;
 
 import backend.z3smt.Z3SmtFormatTranslator;
 import backend.z3smt.encoder.Z3SmtAbstractConstraintEncoder;
+import checkers.inference.model.CombVariableSlot;
 import checkers.inference.model.ConstantSlot;
 import checkers.inference.model.VariableSlot;
 import checkers.inference.solver.backend.encoder.combine.CombineConstraintEncoder;
@@ -29,7 +30,7 @@ public class UnitsZ3SmtCombineConstraintEncoder
 
     @Override
     public BoolExpr encodeVariable_Variable(
-            VariableSlot target, VariableSlot declared, VariableSlot result) {
+            VariableSlot target, VariableSlot declared, CombVariableSlot result) {
         Z3InferenceUnit decl = declared.serialize(z3SmtFormatTranslator);
         Z3InferenceUnit res = result.serialize(z3SmtFormatTranslator);
         return UnitsZ3SmtEncoderUtils.equality(ctx, decl, res);
@@ -37,7 +38,7 @@ public class UnitsZ3SmtCombineConstraintEncoder
 
     @Override
     public BoolExpr encodeVariable_Constant(
-            VariableSlot target, ConstantSlot declared, VariableSlot result) {
+            VariableSlot target, ConstantSlot declared, CombVariableSlot result) {
         Z3InferenceUnit tar = target.serialize(z3SmtFormatTranslator);
         Z3InferenceUnit decl = declared.serialize(z3SmtFormatTranslator);
         Z3InferenceUnit res = result.serialize(z3SmtFormatTranslator);
@@ -49,7 +50,7 @@ public class UnitsZ3SmtCombineConstraintEncoder
 
     @Override
     public BoolExpr encodeConstant_Variable(
-            ConstantSlot target, VariableSlot declared, VariableSlot result) {
+            ConstantSlot target, VariableSlot declared, CombVariableSlot result) {
         Z3InferenceUnit decl = declared.serialize(z3SmtFormatTranslator);
         Z3InferenceUnit res = result.serialize(z3SmtFormatTranslator);
         return UnitsZ3SmtEncoderUtils.equality(ctx, decl, res);
@@ -57,7 +58,7 @@ public class UnitsZ3SmtCombineConstraintEncoder
 
     @Override
     public BoolExpr encodeConstant_Constant(
-            ConstantSlot target, ConstantSlot declared, VariableSlot result) {
+            ConstantSlot target, ConstantSlot declared, CombVariableSlot result) {
         Z3InferenceUnit tar = target.serialize(z3SmtFormatTranslator);
         Z3InferenceUnit decl = declared.serialize(z3SmtFormatTranslator);
         Z3InferenceUnit res = result.serialize(z3SmtFormatTranslator);

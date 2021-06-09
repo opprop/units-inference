@@ -174,8 +174,8 @@ public class UnitsVisitor extends InferenceVisitor<UnitsChecker, BaseAnnotatedTy
                     break;
                 default:
                     // TODO: replace with LUBSlot pending mier's PR
-                    VariableSlot lubSlot =
-                            slotManager.getVariableSlot(atypeFactory.getAnnotatedType(binaryTree));
+                    Slot lubSlot =
+                            slotManager.getSlot(atypeFactory.getAnnotatedType(binaryTree));
                     // Create LUB constraint by default
                     constraintManager.addSubtypeConstraint(lhs, lubSlot);
                     constraintManager.addSubtypeConstraint(rhs, lubSlot);
