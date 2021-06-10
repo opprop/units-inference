@@ -1,6 +1,7 @@
-import java.util.*;
 import units.UnitsTools;
 import units.qual.*;
+
+import java.util.*;
 
 class JavaCollections {
 

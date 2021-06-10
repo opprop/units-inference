@@ -16,9 +16,13 @@ import checkers.inference.solver.util.FileUtils;
 import checkers.inference.solver.util.SolverArg;
 import checkers.inference.solver.util.SolverEnvironment;
 import checkers.inference.solver.util.Statistics;
+
 import com.microsoft.z3.BoolExpr;
 import com.microsoft.z3.Context;
 import com.microsoft.z3.Expr;
+
+import org.checkerframework.javacutil.BugInCF;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
@@ -27,8 +31,8 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import javax.lang.model.element.AnnotationMirror;
-import org.checkerframework.javacutil.BugInCF;
 
 // TODO: make this an abstract class with common features
 public class Z3SmtSolver<SlotEncodingT, SlotSolutionT>

@@ -7,7 +7,9 @@ import checkers.inference.model.Slot;
 import checkers.inference.model.VariableSlot;
 import checkers.inference.solver.backend.encoder.ArithmeticConstraintEncoder;
 import checkers.inference.solver.frontend.Lattice;
+
 import org.checkerframework.javacutil.BugInCF;
+
 import units.solvers.backend.gje.UnitsGJEFormatTranslator;
 import units.solvers.backend.gje.representation.GJEEquationSet;
 import units.util.UnitsTypecheckUtils;

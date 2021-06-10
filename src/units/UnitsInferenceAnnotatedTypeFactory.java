@@ -15,6 +15,7 @@ import checkers.inference.model.Slot;
 import checkers.inference.model.VariableSlot;
 import checkers.inference.qual.VarAnnot;
 import checkers.inference.util.InferenceViewpointAdapter;
+
 import com.sun.source.tree.BinaryTree;
 import com.sun.source.tree.ExpressionTree;
 import com.sun.source.tree.IdentifierTree;
@@ -23,15 +24,7 @@ import com.sun.source.tree.MemberSelectTree;
 import com.sun.source.tree.MethodInvocationTree;
 import com.sun.source.tree.NewClassTree;
 import com.sun.source.tree.Tree;
-import java.lang.annotation.Annotation;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
-import javax.lang.model.element.AnnotationMirror;
-import javax.lang.model.element.Element;
-import javax.lang.model.element.ExecutableElement;
-import javax.lang.model.element.Name;
+
 import org.checkerframework.common.basetype.BaseAnnotatedTypeFactory;
 import org.checkerframework.framework.type.AnnotatedTypeFactory;
 import org.checkerframework.framework.type.AnnotatedTypeFormatter;
@@ -51,7 +44,18 @@ import org.checkerframework.javacutil.ElementUtils;
 import org.checkerframework.javacutil.Pair;
 import org.checkerframework.javacutil.TreeUtils;
 import org.checkerframework.javacutil.UserError;
+
 import units.representation.UnitsRepresentationUtils;
+
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
+
+import javax.lang.model.element.AnnotationMirror;
+import javax.lang.model.element.Element;
+import javax.lang.model.element.ExecutableElement;
+import javax.lang.model.element.Name;
 
 public class UnitsInferenceAnnotatedTypeFactory extends InferenceAnnotatedTypeFactory {
     // static reference to the singleton instance
@@ -95,25 +99,25 @@ public class UnitsInferenceAnnotatedTypeFactory extends InferenceAnnotatedTypeFa
         return new UnitsAnnotationClassLoader(checker);
     }
 
-//    // In Inference ATF, this returns the set of real qualifiers
-//    @Override
-//    protected Set<Class<? extends Annotation>> createSupportedTypeQualifiers() {
-//        // get all the loaded annotations
-//        Set<Class<? extends Annotation>> qualSet = new HashSet<Class<? extends Annotation>>();
-//        // Super grabs all supported qualifiers from the real qualifier hierarchy
-//        // and also puts in VarAnnot
-//        qualSet.addAll(super.createSupportedTypeQualifiers());
-//
-//        // System.err.println( " --- quals = " + qualSet );
-//
-//        // // load all the external units
-//        // loadAllExternalUnits();
-//        //
-//        // // copy all loaded external Units to qual set
-//        // qualSet.addAll(externalQualsMap.values());
-//
-//        return qualSet;
-//    }
+    //    // In Inference ATF, this returns the set of real qualifiers
+    //    @Override
+    //    protected Set<Class<? extends Annotation>> createSupportedTypeQualifiers() {
+    //        // get all the loaded annotations
+    //        Set<Class<? extends Annotation>> qualSet = new HashSet<Class<? extends Annotation>>();
+    //        // Super grabs all supported qualifiers from the real qualifier hierarchy
+    //        // and also puts in VarAnnot
+    //        qualSet.addAll(super.createSupportedTypeQualifiers());
+    //
+    //        // System.err.println( " --- quals = " + qualSet );
+    //
+    //        // // load all the external units
+    //        // loadAllExternalUnits();
+    //        //
+    //        // // copy all loaded external Units to qual set
+    //        // qualSet.addAll(externalQualsMap.values());
+    //
+    //        return qualSet;
+    //    }
 
     // In Inference ATF, this returns the alias for a given real qualifier
     @Override

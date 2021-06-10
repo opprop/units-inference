@@ -2,15 +2,7 @@ package units;
 
 import com.sun.source.tree.BinaryTree;
 import com.sun.source.tree.Tree.Kind;
-import java.lang.annotation.Annotation;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.LinkedHashSet;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Set;
-import javax.lang.model.element.AnnotationMirror;
+
 import org.checkerframework.common.basetype.BaseAnnotatedTypeFactory;
 import org.checkerframework.common.basetype.BaseTypeChecker;
 import org.checkerframework.framework.qual.LiteralKind;
@@ -34,9 +26,9 @@ import org.checkerframework.framework.util.GraphQualifierHierarchy;
 import org.checkerframework.framework.util.MultiGraphQualifierHierarchy.MultiGraphFactory;
 import org.checkerframework.framework.util.defaults.QualifierDefaults;
 import org.checkerframework.javacutil.AnnotationUtils;
-import org.checkerframework.javacutil.BugInCF;
 import org.checkerframework.javacutil.TreeUtils;
 import org.checkerframework.javacutil.UserError;
+
 import units.qual.BaseUnit;
 import units.qual.PolyUnit;
 import units.qual.RDU;
@@ -44,6 +36,17 @@ import units.qual.UnitsAlias;
 import units.qual.UnitsRep;
 import units.representation.UnitsRepresentationUtils;
 import units.util.UnitsTypecheckUtils;
+
+import java.lang.annotation.Annotation;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedHashSet;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
+
+import javax.lang.model.element.AnnotationMirror;
 
 public class UnitsAnnotatedTypeFactory extends BaseAnnotatedTypeFactory {
     // static reference to the singleton instance
@@ -90,7 +93,7 @@ public class UnitsAnnotatedTypeFactory extends BaseAnnotatedTypeFactory {
         // check to see if it is an internal units annotation
         if (AnnotationUtils.areSameByClass(anno, UnitsRep.class)) {
             // fill in missing base units
-            return anno; //unitsRepUtils.fillMissingBaseUnits(anno);
+            return anno; // unitsRepUtils.fillMissingBaseUnits(anno);
         }
 
         // check to see if it's a surface annotation such as @m or @UnknownUnits
@@ -125,7 +128,7 @@ public class UnitsAnnotatedTypeFactory extends BaseAnnotatedTypeFactory {
             return false;
         }
         if (AnnotationUtils.areSameByClass(anno, UnitsRep.class)) {
-        	return true;
+            return true;
         }
         if (AnnotationUtils.areSameByClass(anno, PolyUnit.class)) {
             return true;
@@ -202,7 +205,8 @@ public class UnitsAnnotatedTypeFactory extends BaseAnnotatedTypeFactory {
         }
 
         /**
-         * Programmatically set {@link UnitsRepresentationUtils#POLYUNIT} as the polymorphic qualifiers
+         * Programmatically set {@link UnitsRepresentationUtils#POLYUNIT} as the polymorphic
+         * qualifiers
          */
         @Override
         protected void addPolyRelations(
@@ -272,8 +276,8 @@ public class UnitsAnnotatedTypeFactory extends BaseAnnotatedTypeFactory {
             if (AnnotationUtils.areSameByClass(subAnno, UnitsRep.class)
                     && AnnotationUtils.areSameByClass(superAnno, UnitsRep.class)) {
 
-            	return AnnotationUtils.areSame(subAnno, superAnno);
-                //return UnitsTypecheckUtils.unitsEqual(subAnno, superAnno);
+                return AnnotationUtils.areSame(subAnno, superAnno);
+                // return UnitsTypecheckUtils.unitsEqual(subAnno, superAnno);
 
                 // if (AnnotationUtils.areSame(superAnno, unitsRepUtils.METER)) {
                 // System.err.println(" === checking SUBTYPE \n "
@@ -282,9 +286,9 @@ public class UnitsAnnotatedTypeFactory extends BaseAnnotatedTypeFactory {
                 // + " result: " + result);
                 // }
 
-                //return result;
+                // return result;
             }
-            
+
             return true;
         }
     }

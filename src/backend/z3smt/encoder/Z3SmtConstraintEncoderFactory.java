@@ -1,8 +1,10 @@
 package backend.z3smt.encoder;
 
 import backend.z3smt.Z3SmtFormatTranslator;
+
 import checkers.inference.solver.backend.encoder.AbstractConstraintEncoderFactory;
 import checkers.inference.solver.frontend.Lattice;
+
 import com.microsoft.z3.BoolExpr;
 import com.microsoft.z3.Context;
 

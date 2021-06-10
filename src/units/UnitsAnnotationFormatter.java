@@ -1,12 +1,15 @@
 package units;
 
+import org.checkerframework.common.basetype.BaseTypeChecker;
+import org.checkerframework.framework.util.DefaultAnnotationFormatter;
+
+import units.representation.UnitsRepresentationUtils;
+
 import java.util.List;
+
 import javax.lang.model.element.AnnotationMirror;
 import javax.lang.model.element.AnnotationValue;
 import javax.lang.model.element.VariableElement;
-import org.checkerframework.common.basetype.BaseTypeChecker;
-import org.checkerframework.framework.util.DefaultAnnotationFormatter;
-import units.representation.UnitsRepresentationUtils;
 
 public class UnitsAnnotationFormatter extends DefaultAnnotationFormatter {
 

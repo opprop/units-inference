@@ -11,6 +11,7 @@ import checkers.inference.solver.backend.encoder.existential.ExistentialConstrai
 import checkers.inference.solver.backend.encoder.implication.ImplicationConstraintEncoder;
 import checkers.inference.solver.backend.encoder.preference.PreferenceConstraintEncoder;
 import checkers.inference.solver.frontend.Lattice;
+
 import units.solvers.backend.gje.UnitsGJEFormatTranslator;
 import units.solvers.backend.gje.representation.GJEEquationSet;
 

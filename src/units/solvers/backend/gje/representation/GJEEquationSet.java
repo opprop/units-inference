@@ -1,13 +1,15 @@
 package units.solvers.backend.gje.representation;
 
+import org.checkerframework.javacutil.BugInCF;
+
+import units.representation.UnitsRepresentationUtils;
+
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Objects;
 import java.util.Set;
-import org.checkerframework.javacutil.BugInCF;
-import units.representation.UnitsRepresentationUtils;
 
 public class GJEEquationSet {
 
