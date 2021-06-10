@@ -5,6 +5,6 @@ jdk:
   - oraclejdk8
 
 install:
-  - pip install --user  -r ./.travis-requirements.txt
+  - pip3 install --user  -r ./.travis-requirements.txt
 
 script: ./.travis-build.sh
