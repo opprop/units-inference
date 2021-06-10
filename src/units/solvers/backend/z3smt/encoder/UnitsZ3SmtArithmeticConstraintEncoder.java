@@ -2,6 +2,7 @@ package units.solvers.backend.z3smt.encoder;
 
 import backend.z3smt.Z3SmtFormatTranslator;
 import backend.z3smt.encoder.Z3SmtAbstractConstraintEncoder;
+
 import checkers.inference.model.ArithmeticConstraint.ArithmeticOperationKind;
 import checkers.inference.model.ArithmeticVariableSlot;
 import checkers.inference.model.ConstantSlot;
@@ -9,9 +10,12 @@ import checkers.inference.model.Slot;
 import checkers.inference.model.VariableSlot;
 import checkers.inference.solver.backend.encoder.ArithmeticConstraintEncoder;
 import checkers.inference.solver.frontend.Lattice;
+
 import com.microsoft.z3.BoolExpr;
 import com.microsoft.z3.Context;
+
 import org.checkerframework.javacutil.BugInCF;
+
 import units.representation.TypecheckUnit;
 import units.solvers.backend.z3smt.representation.Z3InferenceUnit;
 import units.util.UnitsTypecheckUtils;

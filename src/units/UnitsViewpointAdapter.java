@@ -1,12 +1,14 @@
 package units;
 
-import javax.lang.model.element.AnnotationMirror;
-import javax.lang.model.element.Element;
 import org.checkerframework.framework.type.AbstractViewpointAdapter;
 import org.checkerframework.framework.type.AnnotatedTypeFactory;
 import org.checkerframework.framework.type.AnnotatedTypeMirror;
 import org.checkerframework.javacutil.AnnotationUtils;
+
 import units.representation.UnitsRepresentationUtils;
+
+import javax.lang.model.element.AnnotationMirror;
+import javax.lang.model.element.Element;
 
 public class UnitsViewpointAdapter extends AbstractViewpointAdapter {
 

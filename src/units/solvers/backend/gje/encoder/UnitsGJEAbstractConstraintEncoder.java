@@ -2,6 +2,7 @@ package units.solvers.backend.gje.encoder;
 
 import checkers.inference.solver.backend.encoder.AbstractConstraintEncoder;
 import checkers.inference.solver.frontend.Lattice;
+
 import units.solvers.backend.gje.UnitsGJEFormatTranslator;
 import units.solvers.backend.gje.representation.GJEEquationSet;
 

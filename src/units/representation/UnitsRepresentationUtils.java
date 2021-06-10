@@ -2,6 +2,22 @@ package units.representation;
 
 import checkers.inference.model.ConstantSlot;
 import checkers.inference.solver.util.Statistics;
+
+import org.checkerframework.common.basetype.BaseAnnotatedTypeFactory;
+import org.checkerframework.javacutil.AnnotationBuilder;
+import org.checkerframework.javacutil.AnnotationUtils;
+import org.checkerframework.javacutil.BugInCF;
+
+import units.UnitsAnnotatedTypeFactory;
+import units.qual.BUC;
+import units.qual.Dimensionless;
+import units.qual.PolyUnit;
+import units.qual.RDU;
+import units.qual.UnitsAlias;
+import units.qual.UnitsBottom;
+import units.qual.UnitsRep;
+import units.qual.UnknownUnits;
+
 import java.lang.annotation.Annotation;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -15,22 +31,10 @@ import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
 import java.util.stream.Collectors;
+
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.AnnotationMirror;
 import javax.lang.model.util.Elements;
-import org.checkerframework.common.basetype.BaseAnnotatedTypeFactory;
-import org.checkerframework.javacutil.AnnotationBuilder;
-import org.checkerframework.javacutil.AnnotationUtils;
-import org.checkerframework.javacutil.BugInCF;
-import units.UnitsAnnotatedTypeFactory;
-import units.qual.BUC;
-import units.qual.Dimensionless;
-import units.qual.PolyUnit;
-import units.qual.RDU;
-import units.qual.UnitsAlias;
-import units.qual.UnitsBottom;
-import units.qual.UnitsRep;
-import units.qual.UnknownUnits;
 
 /**
  * Utility class containing logic for creating and converting internal representations of units
@@ -76,7 +80,7 @@ public class UnitsRepresentationUtils {
      * Instances of time units for use with various time APIs, used by {@link
      * UnitsAnnotatedTypeFactory#UnitsImplicitsTreeAnnotator}
      */
-//    public AnnotationMirror SECOND, MILLISECOND, MICROSECOND, NANOSECOND;
+    //    public AnnotationMirror SECOND, MILLISECOND, MICROSECOND, NANOSECOND;
 
     // Comparator used to sort annotation classes by their simple class name
     private static Comparator<Class<? extends Annotation>> annoClassComparator =
@@ -249,13 +253,13 @@ public class UnitsRepresentationUtils {
 
         SURFACE_TOP = AnnotationBuilder.fromClass(elements, UnknownUnits.class);
         SURFACE_BOTTOM = AnnotationBuilder.fromClass(elements, UnitsBottom.class);
-//
-//        Map<String, Integer> secondBaseMap = createZeroFilledBaseUnitsMap();
-//        secondBaseMap.put("s", 1);
-//        SECOND = createInternalUnit(false, false, 0, secondBaseMap);
-//        MILLISECOND = createInternalUnit(false, false, -3, secondBaseMap);
-//        MICROSECOND = createInternalUnit(false, false, -6, secondBaseMap);
-//        NANOSECOND = createInternalUnit(false, false, -9, secondBaseMap);
+        //
+        //        Map<String, Integer> secondBaseMap = createZeroFilledBaseUnitsMap();
+        //        secondBaseMap.put("s", 1);
+        //        SECOND = createInternalUnit(false, false, 0, secondBaseMap);
+        //        MILLISECOND = createInternalUnit(false, false, -3, secondBaseMap);
+        //        MICROSECOND = createInternalUnit(false, false, -6, secondBaseMap);
+        //        NANOSECOND = createInternalUnit(false, false, -9, secondBaseMap);
 
         // for (Entry<AnnotationMirror, AnnotationMirror> entry : unitsAnnotationMirrorMap
         // .entrySet()) {
@@ -493,7 +497,7 @@ public class UnitsRepresentationUtils {
         if (typecheckUnitCache.containsKey(anno)) {
             return typecheckUnitCache.get(anno);
         }
-        
+
         TypecheckUnit unit = new TypecheckUnit();
 
         // if it is a polyunit or rdu annotation, generate top
