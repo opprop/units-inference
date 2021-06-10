@@ -26,7 +26,6 @@ class StaticFinalConstants {
         public static final @rad int HASUNIT = 20 * UnitsTools.rad;
 
         public MyConstants() {}
-        ;
     }
 
     void inferRadians2() {
