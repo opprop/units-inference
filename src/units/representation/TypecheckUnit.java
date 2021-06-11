@@ -1,8 +1,9 @@
 package units.representation;
 
+import org.checkerframework.javacutil.BugInCF;
+
 import java.util.Map;
 import java.util.Objects;
-import org.checkerframework.javacutil.BugInCF;
 
 /**
  * A data structure class to encapsulate a set of java variables representing a unit for type

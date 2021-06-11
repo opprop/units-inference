@@ -1,6 +1,7 @@
 /** @skip-test */
-import java.util.Iterator;
 import units.qual.*;
+
+import java.util.Iterator;
 
 // from ode4j
 

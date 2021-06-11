@@ -11,19 +11,22 @@ import checkers.inference.model.ArithmeticVariableSlot;
 import checkers.inference.model.ConstantSlot;
 import checkers.inference.model.ConstraintManager;
 import checkers.inference.model.Slot;
-import checkers.inference.model.VariableSlot;
+
 import com.sun.source.tree.BinaryTree;
 import com.sun.source.tree.Tree.Kind;
 import com.sun.source.tree.TypeCastTree;
 import com.sun.source.tree.UnaryTree;
-import java.util.Set;
-import javax.lang.model.element.AnnotationMirror;
+
 import org.checkerframework.common.basetype.BaseAnnotatedTypeFactory;
 import org.checkerframework.framework.type.AnnotatedTypeMirror;
 import org.checkerframework.javacutil.AnnotationUtils;
 import org.checkerframework.javacutil.TreeUtils;
+
 import units.representation.UnitsRepresentationUtils;
-import units.util.UnitsTypecheckUtils;
+
+import java.util.Set;
+
+import javax.lang.model.element.AnnotationMirror;
 
 public class UnitsVisitor extends InferenceVisitor<UnitsChecker, BaseAnnotatedTypeFactory> {
 
@@ -174,8 +177,7 @@ public class UnitsVisitor extends InferenceVisitor<UnitsChecker, BaseAnnotatedTy
                     break;
                 default:
                     // TODO: replace with LUBSlot pending mier's PR
-                    VariableSlot lubSlot =
-                            slotManager.getVariableSlot(atypeFactory.getAnnotatedType(binaryTree));
+                    Slot lubSlot = slotManager.getSlot(atypeFactory.getAnnotatedType(binaryTree));
                     // Create LUB constraint by default
                     constraintManager.addSubtypeConstraint(lhs, lubSlot);
                     constraintManager.addSubtypeConstraint(rhs, lubSlot);
@@ -264,7 +266,8 @@ public class UnitsVisitor extends InferenceVisitor<UnitsChecker, BaseAnnotatedTy
                                     UnitsRepresentationUtils.getInstance().TOP);
 
             // If expression type is dimensionless, permit it to be casted to anything
-            if (AnnotationUtils.areSame(exprType, UnitsRepresentationUtils.getInstance().DIMENSIONLESS)) {
+            if (AnnotationUtils.areSame(
+                    exprType, UnitsRepresentationUtils.getInstance().DIMENSIONLESS)) {
                 if (atypeFactory.getDependentTypesHelper() != null) {
                     AnnotatedTypeMirror type = atypeFactory.getAnnotatedType(node);
                     atypeFactory.getDependentTypesHelper().checkType(type, node.getType());

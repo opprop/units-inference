@@ -2,6 +2,7 @@ package units.solvers.backend.gje.encoder;
 
 import checkers.inference.solver.backend.encoder.AbstractConstraintEncoderFactory;
 import checkers.inference.solver.backend.encoder.ArithmeticConstraintEncoder;
+import checkers.inference.solver.backend.encoder.ComparisonConstraintEncoder;
 import checkers.inference.solver.backend.encoder.binary.ComparableConstraintEncoder;
 import checkers.inference.solver.backend.encoder.binary.EqualityConstraintEncoder;
 import checkers.inference.solver.backend.encoder.binary.InequalityConstraintEncoder;
@@ -11,6 +12,7 @@ import checkers.inference.solver.backend.encoder.existential.ExistentialConstrai
 import checkers.inference.solver.backend.encoder.implication.ImplicationConstraintEncoder;
 import checkers.inference.solver.backend.encoder.preference.PreferenceConstraintEncoder;
 import checkers.inference.solver.frontend.Lattice;
+
 import units.solvers.backend.gje.UnitsGJEFormatTranslator;
 import units.solvers.backend.gje.representation.GJEEquationSet;
 
@@ -71,5 +73,10 @@ public class UnitsGJEConstraintEncoderFactory
     @Override
     public ArithmeticConstraintEncoder<GJEEquationSet> createArithmeticConstraintEncoder() {
         return new UnitsGJEArithmeticConstraintEncoder(lattice, formatTranslator);
+    }
+
+    @Override
+    public ComparisonConstraintEncoder<GJEEquationSet> createComparisonConstraintEncoder() {
+        return null;
     }
 }

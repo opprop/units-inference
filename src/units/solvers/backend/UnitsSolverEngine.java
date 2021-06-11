@@ -2,7 +2,9 @@ package units.solvers.backend;
 
 import checkers.inference.solver.SolverEngine;
 import checkers.inference.solver.backend.SolverFactory;
+
 import org.checkerframework.javacutil.BugInCF;
+
 import units.solvers.backend.gje.UnitsGJESolverFactory;
 import units.solvers.backend.z3smt.UnitsZ3SmtSolverFactory;
 
