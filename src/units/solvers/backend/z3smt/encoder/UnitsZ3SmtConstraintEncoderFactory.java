@@ -4,7 +4,6 @@ import backend.z3smt.Z3SmtFormatTranslator;
 import backend.z3smt.encoder.Z3SmtConstraintEncoderFactory;
 
 import checkers.inference.solver.backend.encoder.ArithmeticConstraintEncoder;
-import checkers.inference.solver.backend.encoder.ComparisonConstraintEncoder;
 import checkers.inference.solver.backend.encoder.binary.ComparableConstraintEncoder;
 import checkers.inference.solver.backend.encoder.binary.EqualityConstraintEncoder;
 import checkers.inference.solver.backend.encoder.binary.InequalityConstraintEncoder;
@@ -78,10 +77,5 @@ public class UnitsZ3SmtConstraintEncoderFactory
     @Override
     public ArithmeticConstraintEncoder<BoolExpr> createArithmeticConstraintEncoder() {
         return new UnitsZ3SmtArithmeticConstraintEncoder(lattice, ctx, formatTranslator);
-    }
-
-    @Override
-    public ComparisonConstraintEncoder<BoolExpr> createComparisonConstraintEncoder() {
-        return null;
     }
 }
