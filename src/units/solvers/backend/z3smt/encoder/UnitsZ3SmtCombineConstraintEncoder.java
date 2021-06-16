@@ -4,6 +4,7 @@ import backend.z3smt.Z3SmtFormatTranslator;
 import backend.z3smt.encoder.Z3SmtAbstractConstraintEncoder;
 
 import checkers.inference.model.CombVariableSlot;
+
 import checkers.inference.model.ConstantSlot;
 import checkers.inference.model.VariableSlot;
 import checkers.inference.solver.backend.encoder.combine.CombineConstraintEncoder;
