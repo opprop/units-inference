@@ -1,13 +1,25 @@
 package units.solvers.backend.z3smt;
 
 import backend.z3smt.Z3SmtFormatTranslator;
+
 import checkers.inference.model.ConstantSlot;
 import checkers.inference.model.Slot;
 import checkers.inference.model.VariableSlot;
 import checkers.inference.solver.backend.encoder.ConstraintEncoderFactory;
 import checkers.inference.solver.frontend.Lattice;
+
 import com.microsoft.z3.BoolExpr;
 import com.microsoft.z3.IntExpr;
+
+import org.checkerframework.javacutil.AnnotationUtils;
+import org.checkerframework.javacutil.Pair;
+
+import units.representation.TypecheckUnit;
+import units.representation.UnitsRepresentationUtils;
+import units.solvers.backend.z3smt.encoder.UnitsZ3SmtConstraintEncoderFactory;
+import units.solvers.backend.z3smt.encoder.UnitsZ3SmtEncoderUtils;
+import units.solvers.backend.z3smt.representation.Z3InferenceUnit;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -15,15 +27,9 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.AnnotationMirror;
-import org.checkerframework.javacutil.AnnotationUtils;
-import org.checkerframework.javacutil.Pair;
-import units.representation.TypecheckUnit;
-import units.representation.UnitsRepresentationUtils;
-import units.solvers.backend.z3smt.encoder.UnitsZ3SmtConstraintEncoderFactory;
-import units.solvers.backend.z3smt.encoder.UnitsZ3SmtEncoderUtils;
-import units.solvers.backend.z3smt.representation.Z3InferenceUnit;
 
 public class UnitsZ3SmtFormatTranslator
         extends Z3SmtFormatTranslator<Z3InferenceUnit, TypecheckUnit> {

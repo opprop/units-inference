@@ -1,12 +1,15 @@
 package units;
 
-import java.lang.annotation.Annotation;
-import javax.lang.model.element.AnnotationMirror;
 import org.checkerframework.common.basetype.BaseTypeChecker;
 import org.checkerframework.framework.type.AnnotationClassLoader;
+
 import units.qual.BaseUnit;
 import units.qual.UnitsAlias;
 import units.representation.UnitsRepresentationUtils;
+
+import java.lang.annotation.Annotation;
+
+import javax.lang.model.element.AnnotationMirror;
 
 public class UnitsAnnotationClassLoader extends AnnotationClassLoader {
 

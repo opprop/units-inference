@@ -4,12 +4,15 @@ import checkers.inference.InferenceMain;
 import checkers.inference.model.ConstantSlot;
 import checkers.inference.model.Slot;
 import checkers.inference.util.InferenceViewpointAdapter;
-import javax.lang.model.element.AnnotationMirror;
-import javax.lang.model.element.Element;
+
 import org.checkerframework.framework.type.AnnotatedTypeFactory;
 import org.checkerframework.framework.type.AnnotatedTypeMirror;
 import org.checkerframework.javacutil.AnnotationUtils;
+
 import units.representation.UnitsRepresentationUtils;
+
+import javax.lang.model.element.AnnotationMirror;
+import javax.lang.model.element.Element;
 
 public class UnitsInferenceViewpointAdapter extends InferenceViewpointAdapter {
 

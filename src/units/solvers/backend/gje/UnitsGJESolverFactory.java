@@ -6,6 +6,7 @@ import checkers.inference.solver.backend.AbstractSolverFactory;
 import checkers.inference.solver.backend.Solver;
 import checkers.inference.solver.frontend.Lattice;
 import checkers.inference.solver.util.SolverEnvironment;
+
 import java.util.Collection;
 
 public class UnitsGJESolverFactory extends AbstractSolverFactory<UnitsGJEFormatTranslator> {
