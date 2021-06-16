@@ -252,4 +252,9 @@ task reformat(type: Exec, dependsOn: [getCodeFormatScripts, pythonIsInstalled], 
     }
 }
 
-tasks.test.dependsOn 'checkFormat'
+//tasks.test.dependsOn 'checkFormat'
+tasks.test {
+    if (JavaVersion.current() == JavaVersion.VERSION_11) {
+        dependsOn 'checkFormat'
+    }
+}
