@@ -26,6 +26,7 @@ import org.checkerframework.framework.util.GraphQualifierHierarchy;
 import org.checkerframework.framework.util.MultiGraphQualifierHierarchy.MultiGraphFactory;
 import org.checkerframework.framework.util.defaults.QualifierDefaults;
 import org.checkerframework.javacutil.AnnotationUtils;
+import org.checkerframework.javacutil.BugInCF;
 import org.checkerframework.javacutil.TreeUtils;
 import org.checkerframework.javacutil.UserError;
 
@@ -93,7 +94,7 @@ public class UnitsAnnotatedTypeFactory extends BaseAnnotatedTypeFactory {
         // check to see if it is an internal units annotation
         if (AnnotationUtils.areSameByClass(anno, UnitsRep.class)) {
             // fill in missing base units
-            return anno; // unitsRepUtils.fillMissingBaseUnits(anno);
+            return unitsRepUtils.fillMissingBaseUnits(anno);
         }
 
         // check to see if it's a surface annotation such as @m or @UnknownUnits
@@ -272,6 +273,22 @@ public class UnitsAnnotatedTypeFactory extends BaseAnnotatedTypeFactory {
                 return true;
             }
 
+            // Case: @PolyUnit are treated as @UnknownUnits
+            if (AnnotationUtils.areSame(subAnno, unitsRepUtils.POLYUNIT)) {
+                return isSubtype(unitsRepUtils.TOP, superAnno);
+            }
+            if (AnnotationUtils.areSame(superAnno, unitsRepUtils.POLYUNIT)) {
+                return true;
+            }
+
+            // Case: @RDU shouldn't appear. throw error?
+            if (AnnotationUtils.areSame(subAnno, unitsRepUtils.RECEIVER_DEPENDANT_UNIT)) {
+                return isSubtype(unitsRepUtils.TOP, superAnno);
+            }
+            if (AnnotationUtils.areSame(superAnno, unitsRepUtils.RECEIVER_DEPENDANT_UNIT)) {
+                return true;
+            }
+
             // Case: @UnitsRep(x) <: @UnitsRep(y)
             if (AnnotationUtils.areSameByClass(subAnno, UnitsRep.class)
                     && AnnotationUtils.areSameByClass(superAnno, UnitsRep.class)) {
@@ -289,7 +306,12 @@ public class UnitsAnnotatedTypeFactory extends BaseAnnotatedTypeFactory {
                 // return result;
             }
 
-            return true;
+            throw new BugInCF(
+                    "Uncaught subtype check case:"
+                            + "\n    subtype:   "
+                            + getAnnotationFormatter().formatAnnotationMirror(subAnno)
+                            + "\n    supertype: "
+                            + getAnnotationFormatter().formatAnnotationMirror(superAnno));
         }
     }
 
