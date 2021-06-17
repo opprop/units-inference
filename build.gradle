@@ -91,12 +91,17 @@ afterEvaluate {
         group 'Verification'
 
         systemProperties 'path.afu.scripts': "${afu}/scripts",
-                'path.inference.script': "${cfi}/scripts/inference",
-                JDK_JAR: "${cf}/checker/dist/jdk8.jar"
+                'path.inference.script': "${cfi}/scripts/inference"
+
+        if (JavaVersion.current() == JavaVersion.VERSION_1_8) {
+            systemProperties += [JDK_JAR: "${cf}/checker/dist/jdk8.jar"]
+        }
 
         environment "external_checker_classpath", "${units}/build/classes/java/main:${units}/build/resources/main"
 
-        jvmArgs "-Xbootclasspath/p:${cfi}/dist/javac.jar"
+        if (JavaVersion.current() == JavaVersion.VERSION_1_8) {
+            jvmArgs "-Xbootclasspath/p:${cfi}/dist/javac.jar"
+        }
 
         testLogging {
             // Always run the tests
