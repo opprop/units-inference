@@ -33,7 +33,7 @@ else
 fi
 
 ## Build checker-framework-inference
-(cd $JSR308/checker-framework-inference && ./.travis-build-without-test.sh)
+(cd $JSR308/checker-framework-inference && ./.ci-build-without-test.sh)
 
 ## Build units-inference without testing
 (cd $JSR308/units-inference && ./gradlew build -x test)

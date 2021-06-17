@@ -7,6 +7,7 @@ import checkers.inference.model.ExistentialVariableSlot;
 import checkers.inference.model.LubVariableSlot;
 import checkers.inference.model.RefinementVariableSlot;
 import checkers.inference.model.Slot;
+import checkers.inference.model.SourceVariableSlot;
 import checkers.inference.model.VariableSlot;
 import checkers.inference.model.serialization.ToStringSerializer;
 import checkers.inference.solver.backend.AbstractFormatTranslator;
@@ -67,7 +68,7 @@ public class UnitsGJEFormatTranslator
             constraint.serialize(slotsCollector);
         }
 
-        for (VariableSlot slot : slotsCollector.getSlots()) {
+        for (Slot slot : slotsCollector.getSlots()) {
             slotGJEtoCFIMap.put(gjeID, slot);
             slotCFItoGJEMap.put(slot, gjeID);
             System.err.println("ID: " + gjeID + " --> slot " + slot.serialize(toStringSerializer));
@@ -138,7 +139,7 @@ public class UnitsGJEFormatTranslator
     }
 
     @Override
-    public GJEInferenceUnit serialize(VariableSlot slot) {
+    public GJEInferenceUnit serialize(SourceVariableSlot slot) {
         // System.err.println("Serializing vs " + slot);
         return serializeVarSlot(slot);
     }
