@@ -355,12 +355,12 @@ public class UnitsVisitor extends InferenceVisitor<UnitsChecker, BaseAnnotatedTy
     // Slots created in ATF
     // Constraints created in Visitor
 
-
     /**
-     * Skip this test because a constructor produces either objects of a certain unit or dimensionless objects.
+     * Skip this test because a constructor produces either objects of a certain unit or
+     * dimensionless objects.
      */
     @Override
     protected void checkConstructorResult(
-            AnnotatedTypeMirror.AnnotatedExecutableType constructorType, ExecutableElement constructorElement) {
-    }
+            AnnotatedTypeMirror.AnnotatedExecutableType constructorType,
+            ExecutableElement constructorElement) {}
 }
