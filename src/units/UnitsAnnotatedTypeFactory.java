@@ -129,7 +129,7 @@ public class UnitsAnnotatedTypeFactory extends BaseAnnotatedTypeFactory {
             return false;
         }
         if (AnnotationUtils.areSameByClass(anno, UnitsRep.class)) {
-            return true;
+            return unitsRepUtils.hasAllBaseUnits(anno);
         }
         if (AnnotationUtils.areSameByClass(anno, PolyUnit.class)) {
             return true;
