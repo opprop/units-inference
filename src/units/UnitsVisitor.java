@@ -24,8 +24,12 @@ import org.checkerframework.common.basetype.BaseAnnotatedTypeFactory;
 import org.checkerframework.framework.type.AnnotatedTypeMirror;
 import org.checkerframework.javacutil.AnnotationUtils;
 import org.checkerframework.javacutil.TreeUtils;
+
 import units.representation.UnitsRepresentationUtils;
-import units.util.UnitsTypecheckUtils;
+
+import java.util.Set;
+
+import javax.lang.model.element.AnnotationMirror;
 
 public class UnitsVisitor extends InferenceVisitor<UnitsChecker, BaseAnnotatedTypeFactory> {
 
@@ -265,7 +269,7 @@ public class UnitsVisitor extends InferenceVisitor<UnitsChecker, BaseAnnotatedTy
                                     UnitsRepresentationUtils.getInstance().TOP);
 
             // If expression type is dimensionless, permit it to be casted to anything
-            if (UnitsTypecheckUtils.unitsEqual(
+            if (AnnotationUtils.areSame(
                     exprType, UnitsRepresentationUtils.getInstance().DIMENSIONLESS)) {
                 if (atypeFactory.getDependentTypesHelper() != null) {
                     AnnotatedTypeMirror type = atypeFactory.getAnnotatedType(node);

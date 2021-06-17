@@ -3,7 +3,9 @@ package units.solvers.backend.z3smt.encoder;
 import com.microsoft.z3.BoolExpr;
 import com.microsoft.z3.Context;
 import com.microsoft.z3.IntNum;
+
 import org.checkerframework.javacutil.Pair;
+
 import units.representation.UnitsRepresentationUtils;
 import units.solvers.backend.z3smt.representation.Z3InferenceUnit;
 

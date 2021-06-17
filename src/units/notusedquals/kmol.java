@@ -1,12 +1,13 @@
 package units.notusedquals;
 
+import units.qual.BUC;
+import units.qual.UnitsAlias;
+
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
-import units.qual.BUC;
-import units.qual.UnitsAlias;
 
 /**
  * kili mol.
