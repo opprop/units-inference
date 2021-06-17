@@ -11,13 +11,15 @@ import checkers.inference.model.ArithmeticVariableSlot;
 import checkers.inference.model.ConstantSlot;
 import checkers.inference.model.ConstraintManager;
 import checkers.inference.model.Slot;
-import checkers.inference.model.VariableSlot;
+
 import com.sun.source.tree.BinaryTree;
 import com.sun.source.tree.Tree.Kind;
 import com.sun.source.tree.TypeCastTree;
 import com.sun.source.tree.UnaryTree;
 import java.util.Set;
 import javax.lang.model.element.AnnotationMirror;
+import javax.lang.model.element.ExecutableElement;
+
 import org.checkerframework.common.basetype.BaseAnnotatedTypeFactory;
 import org.checkerframework.framework.type.AnnotatedTypeMirror;
 import org.checkerframework.javacutil.AnnotationUtils;
@@ -174,8 +176,7 @@ public class UnitsVisitor extends InferenceVisitor<UnitsChecker, BaseAnnotatedTy
                     break;
                 default:
                     // TODO: replace with LUBSlot pending mier's PR
-                    VariableSlot lubSlot =
-                            slotManager.getVariableSlot(atypeFactory.getAnnotatedType(binaryTree));
+                    Slot lubSlot = slotManager.getSlot(atypeFactory.getAnnotatedType(binaryTree));
                     // Create LUB constraint by default
                     constraintManager.addSubtypeConstraint(lhs, lubSlot);
                     constraintManager.addSubtypeConstraint(rhs, lubSlot);
@@ -351,4 +352,13 @@ public class UnitsVisitor extends InferenceVisitor<UnitsChecker, BaseAnnotatedTy
     // Notes:
     // Slots created in ATF
     // Constraints created in Visitor
+
+
+    /**
+     * Skip this test because a constructor produces either objects of a certain unit or dimensionless objects.
+     */
+    @Override
+    protected void checkConstructorResult(
+            AnnotatedTypeMirror.AnnotatedExecutableType constructorType, ExecutableElement constructorElement) {
+    }
 }

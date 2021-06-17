@@ -36,6 +36,8 @@ import org.checkerframework.javacutil.BugInCF;
 import org.checkerframework.javacutil.TreeUtils;
 import org.checkerframework.javacutil.UserError;
 import units.qual.BaseUnit;
+import units.qual.PolyUnit;
+import units.qual.RDU;
 import units.qual.UnitsAlias;
 import units.qual.UnitsRep;
 import units.representation.UnitsRepresentationUtils;
@@ -123,8 +125,14 @@ public class UnitsAnnotatedTypeFactory extends BaseAnnotatedTypeFactory {
         if (AnnotationUtils.areSameByClass(anno, UnitsRep.class)) {
             return unitsRepUtils.hasAllBaseUnits(anno);
         }
+        if (AnnotationUtils.areSameByClass(anno, PolyUnit.class)) {
+            return true;
+        }
+        if (AnnotationUtils.areSameByClass(anno, RDU.class)) {
+            return true;
+        }
         // Anno is PolyUnit
-        return AnnotationUtils.containsSame(this.getQualifierHierarchy().getTypeQualifiers(), anno);
+        return false;
     }
 
     // Programmatically set the qualifier defaults
