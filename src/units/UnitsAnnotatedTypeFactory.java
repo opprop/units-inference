@@ -136,6 +136,12 @@ public class UnitsAnnotatedTypeFactory extends BaseAnnotatedTypeFactory {
         if (AnnotationUtils.areSameByClass(anno, RDU.class)) {
             return true;
         }
+        if (AnnotationUtils.areSameByClass(anno, PolyUnit.class)) {
+            return true;
+        }
+        if (AnnotationUtils.areSameByClass(anno, RDU.class)) {
+            return true;
+        }
         // Anno is PolyUnit
         return false;
     }

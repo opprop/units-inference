@@ -60,7 +60,7 @@ public class UnitsZ3SmtFormatTranslator
 
     @Override
     public String generateZ3SlotDeclaration(VariableSlot slot) {
-        Z3InferenceUnit encodedSlot = serializeVarSlot(slot);
+        Z3InferenceUnit encodedSlot = serializeVariableSlot(slot);
 
         List<String> slotDeclaration = new ArrayList<>();
 
@@ -96,7 +96,7 @@ public class UnitsZ3SmtFormatTranslator
     }
 
     @Override
-    protected Z3InferenceUnit serializeVarSlot(VariableSlot slot) {
+    protected Z3InferenceUnit serializeVariableSlot(VariableSlot slot) {
         int slotID = slot.getId();
 
         if (serializedSlots.containsKey(slotID)) {
@@ -159,7 +159,7 @@ public class UnitsZ3SmtFormatTranslator
     public void preAnalyzeSlots(Collection<Slot> slots) {
         Set<ConstantSlot> constantSlots = new HashSet<>();
         for (Slot slot : slots) {
-            if (slot.isConstant()) {
+            if (slot instanceof ConstantSlot) {
                 constantSlots.add((ConstantSlot) slot);
             }
         }
@@ -172,30 +172,12 @@ public class UnitsZ3SmtFormatTranslator
 
     @Override
     public BoolExpr encodeSlotWellformnessConstraint(VariableSlot slot) {
-        if (slot instanceof ConstantSlot) {
-            ConstantSlot cs = (ConstantSlot) slot;
-            AnnotationMirror anno = cs.getValue();
-            // encode PolyUnit as constant trues
-            if (AnnotationUtils.areSame(anno, unitsRepUtils.POLYUNIT)) {
-                return ctx.mkTrue();
-            }
-        }
-
         Z3InferenceUnit serializedSlot = slot.serialize(this);
         return UnitsZ3SmtEncoderUtils.slotWellformedness(ctx, serializedSlot);
     }
 
     @Override
     public BoolExpr encodeSlotPreferenceConstraint(VariableSlot slot) {
-        if (slot instanceof ConstantSlot) {
-            ConstantSlot cs = (ConstantSlot) slot;
-            AnnotationMirror anno = cs.getValue();
-            // encode PolyUnit as constant trues
-            if (AnnotationUtils.areSame(anno, unitsRepUtils.POLYUNIT)) {
-                return ctx.mkTrue();
-            }
-        }
-
         Z3InferenceUnit serializedSlot = slot.serialize(this);
         return UnitsZ3SmtEncoderUtils.slotPreference(ctx, serializedSlot);
     }
