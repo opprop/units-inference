@@ -27,6 +27,7 @@ import units.representation.UnitsRepresentationUtils;
 import java.util.Set;
 
 import javax.lang.model.element.AnnotationMirror;
+import javax.lang.model.element.ExecutableElement;
 
 public class UnitsVisitor extends InferenceVisitor<UnitsChecker, BaseAnnotatedTypeFactory> {
 
@@ -353,4 +354,13 @@ public class UnitsVisitor extends InferenceVisitor<UnitsChecker, BaseAnnotatedTy
     // Notes:
     // Slots created in ATF
     // Constraints created in Visitor
+
+
+    /**
+     * Skip this test because a constructor produces either objects of a certain unit or dimensionless objects.
+     */
+    @Override
+    protected void checkConstructorResult(
+            AnnotatedTypeMirror.AnnotatedExecutableType constructorType, ExecutableElement constructorElement) {
+    }
 }

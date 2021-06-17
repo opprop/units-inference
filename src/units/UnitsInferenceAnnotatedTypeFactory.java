@@ -247,13 +247,6 @@ public class UnitsInferenceAnnotatedTypeFactory extends InferenceAnnotatedTypeFa
     }
 
     @Override
-    protected Set<? extends AnnotationMirror> getDefaultTypeDeclarationBounds() {
-        Set<AnnotationMirror> top = new HashSet<>();
-        top.add(unitsRepUtils.TOP);
-        return top;
-    }
-
-    @Override
     protected InferenceViewpointAdapter createViewpointAdapter() {
         return new UnitsInferenceViewpointAdapter(this);
     }
