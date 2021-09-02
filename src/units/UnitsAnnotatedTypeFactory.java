@@ -1,5 +1,6 @@
 package units;
 
+import checkers.inference.BaseInferenceRealTypeFactory;
 import com.sun.source.tree.BinaryTree;
 import com.sun.source.tree.Tree.Kind;
 import java.lang.annotation.Annotation;
@@ -43,7 +44,7 @@ import units.qual.UnitsRep;
 import units.representation.UnitsRepresentationUtils;
 import units.util.UnitsTypecheckUtils;
 
-public class UnitsAnnotatedTypeFactory extends BaseAnnotatedTypeFactory {
+public class UnitsAnnotatedTypeFactory extends BaseInferenceRealTypeFactory {
     // static reference to the singleton instance
     protected static UnitsRepresentationUtils unitsRepUtils;
 
@@ -155,8 +156,17 @@ public class UnitsAnnotatedTypeFactory extends BaseAnnotatedTypeFactory {
         defs.addCheckedCodeDefault(unitsRepUtils.TOP, TypeUseLocation.LOCAL_VARIABLE);
     }
 
+    @SuppressWarnings("deprecation")
     @Override
-    public QualifierHierarchy createQualifierHierarchy(MultiGraphFactory factory) {
+    public QualifierHierarchy createQualifierHierarchy() {
+        return org.checkerframework.framework.util.MultiGraphQualifierHierarchy
+                .createMultiGraphQualifierHierarchy(this);
+    }
+
+    @SuppressWarnings("deprecation")
+    @Override
+    public QualifierHierarchy createQualifierHierarchyWithMultiGraphFactory(
+            MultiGraphFactory factory) {
         return new UnitsQualifierHierarchy(factory);
     }
 
