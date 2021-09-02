@@ -272,7 +272,7 @@ public class UnitsVisitor extends InferenceVisitor<UnitsChecker, BaseAnnotatedTy
                     exprType, UnitsRepresentationUtils.getInstance().DIMENSIONLESS)) {
                 if (atypeFactory.getDependentTypesHelper() != null) {
                     AnnotatedTypeMirror type = atypeFactory.getAnnotatedType(node);
-                    atypeFactory.getDependentTypesHelper().checkType(type, node.getType());
+                    atypeFactory.getDependentTypesHelper().checkTypeForErrorExpressions(type, node.getType());
                 }
 
                 // perform scan and reduce as per super.super.visitTypeCast()

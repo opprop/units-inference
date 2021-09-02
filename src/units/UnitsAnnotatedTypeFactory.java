@@ -1,5 +1,6 @@
 package units;
 
+import checkers.inference.BaseInferenceRealTypeFactory;
 import com.sun.source.tree.BinaryTree;
 import com.sun.source.tree.Tree.Kind;
 
@@ -48,7 +49,7 @@ import java.util.Set;
 
 import javax.lang.model.element.AnnotationMirror;
 
-public class UnitsAnnotatedTypeFactory extends BaseAnnotatedTypeFactory {
+public class UnitsAnnotatedTypeFactory extends BaseInferenceRealTypeFactory {
     // static reference to the singleton instance
     protected static UnitsRepresentationUtils unitsRepUtils;
 
