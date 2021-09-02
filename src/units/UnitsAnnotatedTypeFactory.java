@@ -1,16 +1,10 @@
 package units;
 
 import checkers.inference.BaseInferenceRealTypeFactory;
+
 import com.sun.source.tree.BinaryTree;
 import com.sun.source.tree.Tree.Kind;
-import java.lang.annotation.Annotation;
-import java.util.HashSet;
-import java.util.LinkedHashSet;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Set;
-import javax.lang.model.element.AnnotationMirror;
-import org.checkerframework.common.basetype.BaseAnnotatedTypeFactory;
+
 import org.checkerframework.common.basetype.BaseTypeChecker;
 import org.checkerframework.framework.qual.LiteralKind;
 import org.checkerframework.framework.qual.TypeUseLocation;
@@ -36,6 +30,7 @@ import org.checkerframework.javacutil.AnnotationUtils;
 import org.checkerframework.javacutil.BugInCF;
 import org.checkerframework.javacutil.TreeUtils;
 import org.checkerframework.javacutil.UserError;
+
 import units.qual.BaseUnit;
 import units.qual.PolyUnit;
 import units.qual.RDU;
@@ -43,6 +38,15 @@ import units.qual.UnitsAlias;
 import units.qual.UnitsRep;
 import units.representation.UnitsRepresentationUtils;
 import units.util.UnitsTypecheckUtils;
+
+import java.lang.annotation.Annotation;
+import java.util.HashSet;
+import java.util.LinkedHashSet;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
+
+import javax.lang.model.element.AnnotationMirror;
 
 public class UnitsAnnotatedTypeFactory extends BaseInferenceRealTypeFactory {
     // static reference to the singleton instance

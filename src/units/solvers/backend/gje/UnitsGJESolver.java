@@ -8,6 +8,11 @@ import checkers.inference.solver.frontend.Lattice;
 import checkers.inference.solver.util.FileUtils;
 import checkers.inference.solver.util.SolverEnvironment;
 import checkers.inference.solver.util.Statistics;
+
+import org.checkerframework.javacutil.BugInCF;
+
+import units.solvers.backend.gje.representation.GJEEquationSet;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
@@ -21,9 +26,8 @@ import java.util.Map.Entry;
 import java.util.Set;
 import java.util.TreeSet;
 import java.util.logging.Logger;
+
 import javax.lang.model.element.AnnotationMirror;
-import org.checkerframework.javacutil.BugInCF;
-import units.solvers.backend.gje.representation.GJEEquationSet;
 
 // GaussJordanElimination solver
 public class UnitsGJESolver extends Solver<UnitsGJEFormatTranslator> {

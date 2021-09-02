@@ -2,6 +2,22 @@ package units.representation;
 
 import checkers.inference.model.ConstantSlot;
 import checkers.inference.solver.util.Statistics;
+
+import org.checkerframework.common.basetype.BaseAnnotatedTypeFactory;
+import org.checkerframework.javacutil.AnnotationBuilder;
+import org.checkerframework.javacutil.AnnotationUtils;
+import org.checkerframework.javacutil.BugInCF;
+
+import units.UnitsAnnotatedTypeFactory;
+import units.qual.BUC;
+import units.qual.Dimensionless;
+import units.qual.PolyUnit;
+import units.qual.RDU;
+import units.qual.UnitsAlias;
+import units.qual.UnitsBottom;
+import units.qual.UnitsRep;
+import units.qual.UnknownUnits;
+
 import java.lang.annotation.Annotation;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -15,22 +31,10 @@ import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
 import java.util.stream.Collectors;
+
 import javax.annotation.processing.ProcessingEnvironment;
 import javax.lang.model.element.AnnotationMirror;
 import javax.lang.model.util.Elements;
-import org.checkerframework.common.basetype.BaseAnnotatedTypeFactory;
-import org.checkerframework.javacutil.AnnotationBuilder;
-import org.checkerframework.javacutil.AnnotationUtils;
-import org.checkerframework.javacutil.BugInCF;
-import units.UnitsAnnotatedTypeFactory;
-import units.qual.BUC;
-import units.qual.Dimensionless;
-import units.qual.PolyUnit;
-import units.qual.RDU;
-import units.qual.UnitsAlias;
-import units.qual.UnitsBottom;
-import units.qual.UnitsRep;
-import units.qual.UnknownUnits;
 
 /**
  * Utility class containing logic for creating and converting internal representations of units

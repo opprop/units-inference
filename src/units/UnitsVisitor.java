@@ -16,16 +16,19 @@ import com.sun.source.tree.BinaryTree;
 import com.sun.source.tree.Tree.Kind;
 import com.sun.source.tree.TypeCastTree;
 import com.sun.source.tree.UnaryTree;
-import java.util.Set;
-import javax.lang.model.element.AnnotationMirror;
-import javax.lang.model.element.ExecutableElement;
 
 import org.checkerframework.common.basetype.BaseAnnotatedTypeFactory;
 import org.checkerframework.framework.type.AnnotatedTypeMirror;
 import org.checkerframework.javacutil.AnnotationUtils;
 import org.checkerframework.javacutil.TreeUtils;
+
 import units.representation.UnitsRepresentationUtils;
 import units.util.UnitsTypecheckUtils;
+
+import java.util.Set;
+
+import javax.lang.model.element.AnnotationMirror;
+import javax.lang.model.element.ExecutableElement;
 
 public class UnitsVisitor extends InferenceVisitor<UnitsChecker, BaseAnnotatedTypeFactory> {
 
@@ -269,7 +272,9 @@ public class UnitsVisitor extends InferenceVisitor<UnitsChecker, BaseAnnotatedTy
                     exprType, UnitsRepresentationUtils.getInstance().DIMENSIONLESS)) {
                 if (atypeFactory.getDependentTypesHelper() != null) {
                     AnnotatedTypeMirror type = atypeFactory.getAnnotatedType(node);
-                    atypeFactory.getDependentTypesHelper().checkTypeForErrorExpressions(type, node.getType());
+                    atypeFactory
+                            .getDependentTypesHelper()
+                            .checkTypeForErrorExpressions(type, node.getType());
                 }
 
                 // perform scan and reduce as per super.super.visitTypeCast()
@@ -353,12 +358,12 @@ public class UnitsVisitor extends InferenceVisitor<UnitsChecker, BaseAnnotatedTy
     // Slots created in ATF
     // Constraints created in Visitor
 
-
     /**
-     * Skip this test because a constructor produces either objects of a certain unit or dimensionless objects.
+     * Skip this test because a constructor produces either objects of a certain unit or
+     * dimensionless objects.
      */
     @Override
     protected void checkConstructorResult(
-            AnnotatedTypeMirror.AnnotatedExecutableType constructorType, ExecutableElement constructorElement) {
-    }
+            AnnotatedTypeMirror.AnnotatedExecutableType constructorType,
+            ExecutableElement constructorElement) {}
 }

@@ -1,5 +1,6 @@
-import java.util.*;
 import units.qual.*;
+
+import java.util.*;
 
 class WhileLoopIterator {
 

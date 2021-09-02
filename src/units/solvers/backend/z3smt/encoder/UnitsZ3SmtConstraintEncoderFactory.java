@@ -2,6 +2,7 @@ package units.solvers.backend.z3smt.encoder;
 
 import backend.z3smt.Z3SmtFormatTranslator;
 import backend.z3smt.encoder.Z3SmtConstraintEncoderFactory;
+
 import checkers.inference.solver.backend.encoder.ArithmeticConstraintEncoder;
 import checkers.inference.solver.backend.encoder.ComparisonConstraintEncoder;
 import checkers.inference.solver.backend.encoder.binary.ComparableConstraintEncoder;
@@ -12,8 +13,10 @@ import checkers.inference.solver.backend.encoder.existential.ExistentialConstrai
 import checkers.inference.solver.backend.encoder.implication.ImplicationConstraintEncoder;
 import checkers.inference.solver.backend.encoder.preference.PreferenceConstraintEncoder;
 import checkers.inference.solver.frontend.Lattice;
+
 import com.microsoft.z3.BoolExpr;
 import com.microsoft.z3.Context;
+
 import units.representation.TypecheckUnit;
 import units.solvers.backend.z3smt.representation.Z3InferenceUnit;
 

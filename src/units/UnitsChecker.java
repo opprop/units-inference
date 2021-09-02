@@ -6,12 +6,15 @@ import checkers.inference.InferenceChecker;
 import checkers.inference.InferrableChecker;
 import checkers.inference.SlotManager;
 import checkers.inference.model.ConstraintManager;
-import java.lang.annotation.Annotation;
-import java.util.Set;
+
 import org.checkerframework.common.basetype.BaseAnnotatedTypeFactory;
 import org.checkerframework.framework.qual.StubFiles;
 import org.checkerframework.framework.source.SupportedOptions;
+
 import units.representation.UnitsRepresentationUtils;
+
+import java.lang.annotation.Annotation;
+import java.util.Set;
 
 @StubFiles({
     "JavaBoxedPrimitives.astub",

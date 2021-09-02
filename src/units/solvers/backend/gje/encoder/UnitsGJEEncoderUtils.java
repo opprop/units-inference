@@ -1,6 +1,7 @@
 package units.solvers.backend.gje.encoder;
 
 import org.checkerframework.javacutil.BugInCF;
+
 import units.representation.UnitsRepresentationUtils;
 import units.solvers.backend.gje.representation.GJEEquationSet;
 import units.solvers.backend.gje.representation.GJEInferenceUnit;
