@@ -44,6 +44,7 @@ import org.checkerframework.javacutil.UserError;
 
 import units.representation.UnitsRepresentationUtils;
 
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.lang.model.element.AnnotationMirror;
@@ -124,6 +125,13 @@ public class UnitsInferenceAnnotatedTypeFactory extends InferenceAnnotatedTypeFa
             result = super.canonicalAnnotation(anno);
         }
         return result;
+    }
+
+    @Override
+    protected Set<? extends AnnotationMirror> getDefaultTypeDeclarationBounds() {
+        Set<AnnotationMirror> top = new HashSet<>();
+        top.add(unitsRepUtils.TOP);
+        return top;
     }
 
     @Override

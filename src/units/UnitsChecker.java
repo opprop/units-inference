@@ -1,6 +1,5 @@
 package units;
 
-import checkers.inference.BaseInferenceRealTypeFactory;
 import checkers.inference.BaseInferrableChecker;
 import checkers.inference.InferenceChecker;
 import checkers.inference.InferrableChecker;
@@ -53,7 +52,7 @@ public class UnitsChecker extends BaseInferrableChecker {
     }
 
     @Override
-    public BaseInferenceRealTypeFactory createRealTypeFactory(boolean infer) {
+    public UnitsAnnotatedTypeFactory createRealTypeFactory(boolean infer) {
         return new UnitsAnnotatedTypeFactory(this);
     }
 
