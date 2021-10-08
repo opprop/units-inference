@@ -2,8 +2,6 @@ package units;
 
 import checkers.inference.InferenceAnnotatedTypeFactory;
 import checkers.inference.InferenceChecker;
-import checkers.inference.InferenceMain;
-import checkers.inference.InferenceQualifierHierarchy;
 import checkers.inference.InferenceTreeAnnotator;
 import checkers.inference.InferrableChecker;
 import checkers.inference.SlotManager;
@@ -33,12 +31,10 @@ import org.checkerframework.framework.type.AnnotatedTypeMirror;
 import org.checkerframework.framework.type.AnnotatedTypeMirror.AnnotatedExecutableType;
 import org.checkerframework.framework.type.AnnotationClassLoader;
 import org.checkerframework.framework.type.DefaultAnnotatedTypeFormatter;
-import org.checkerframework.framework.type.QualifierHierarchy;
 import org.checkerframework.framework.type.treeannotator.ListTreeAnnotator;
 import org.checkerframework.framework.type.treeannotator.TreeAnnotator;
 import org.checkerframework.framework.util.AnnotatedTypes;
 import org.checkerframework.framework.util.AnnotationFormatter;
-import org.checkerframework.framework.util.MultiGraphQualifierHierarchy.MultiGraphFactory;
 import org.checkerframework.javacutil.AnnotationBuilder;
 import org.checkerframework.javacutil.AnnotationUtils;
 import org.checkerframework.javacutil.ElementUtils;
@@ -48,8 +44,6 @@ import org.checkerframework.javacutil.UserError;
 
 import units.representation.UnitsRepresentationUtils;
 
-import java.util.Collection;
-import java.util.Map;
 import java.util.Set;
 
 import javax.lang.model.element.AnnotationMirror;
@@ -133,119 +127,6 @@ public class UnitsInferenceAnnotatedTypeFactory extends InferenceAnnotatedTypeFa
     }
 
     @Override
-    public QualifierHierarchy createQualifierHierarchy(MultiGraphFactory factory) {
-        return new UnitsInferenceQualifierHierarchy(factory);
-    }
-
-    private final class UnitsInferenceQualifierHierarchy extends InferenceQualifierHierarchy {
-        public UnitsInferenceQualifierHierarchy(MultiGraphFactory multiGraphFactory) {
-            super(multiGraphFactory);
-        }
-
-        // In inference mode, the only bottom is VarAnnot
-        @Override
-        protected Set<AnnotationMirror> findBottoms(
-                Map<AnnotationMirror, Set<AnnotationMirror>> supertypes) {
-            Set<AnnotationMirror> newBottoms = super.findBottoms(supertypes);
-            newBottoms.remove(unitsRepUtils.RAWUNITSREP);
-            return newBottoms;
-        }
-
-        // In inference mode, the only qualifier is VarAnnot. The poly qualifiers are
-        // PolyAll and any poly qual from the type system.
-        @Override
-        protected void finish(
-                QualifierHierarchy qualHierarchy,
-                Map<AnnotationMirror, Set<AnnotationMirror>> supertypesMap,
-                Map<AnnotationMirror, AnnotationMirror> polyQualifiers,
-                Set<AnnotationMirror> tops,
-                Set<AnnotationMirror> bottoms,
-                Object... args) {
-            super.finish(qualHierarchy, supertypesMap, polyQualifiers, tops, bottoms, args);
-
-            // TODO: this update, which is sensible to keep the inference qual hierarchy clean,
-            // causes crashes in creating constant slots for @PolyUnit
-            // disabling for now
-
-            /*
-             * Map before update:
-            supertypesMap
-              @checkers.inference.qual.VarAnnot -> [@org.checkerframework.framework.qual.PolyAll]
-              @org.checkerframework.framework.qual.PolyAll -> [@checkers.inference.qual.VarAnnot, @units.qual.UnitsRep]
-              @units.qual.PolyUnit -> [@org.checkerframework.framework.qual.PolyAll, @units.qual.UnitsRep]
-              @units.qual.UnitsRep -> []
-            polyQualifiers {null=@org.checkerframework.framework.qual.PolyAll, @units.qual.UnitsRep=@units.qual.PolyUnit}
-            tops [@checkers.inference.qual.VarAnnot]
-            bottoms [@checkers.inference.qual.VarAnnot]
-             */
-            //
-            // // Remove @UnitsRep from super of PolyAll
-            // assert supertypesMap.containsKey(unitsRepUtils.POLYALL);
-            // Set<AnnotationMirror> polyAllSupers = AnnotationUtils.createAnnotationSet();
-            // polyAllSupers.addAll(supertypesMap.get(unitsRepUtils.POLYALL));
-            // polyAllSupers.remove(unitsRepUtils.RAWUNITSINTERNAL);
-            // supertypesMap.put(unitsRepUtils.POLYALL,
-            // Collections.unmodifiableSet(polyAllSupers));
-            //
-            // // Remove @UnitsRep from super of PolyUnit
-            // assert supertypesMap.containsKey(unitsRepUtils.POLYUNIT);
-            // Set<AnnotationMirror> polyUnitSupers = AnnotationUtils.createAnnotationSet();
-            // polyUnitSupers.addAll(supertypesMap.get(unitsRepUtils.POLYUNIT));
-            // polyUnitSupers.remove(unitsRepUtils.RAWUNITSINTERNAL);
-            // supertypesMap.put(unitsRepUtils.POLYUNIT,
-            // Collections.unmodifiableSet(polyUnitSupers));
-            //
-            // // Remove @UnitsRep from map
-            // supertypesMap.remove(unitsRepUtils.RAWUNITSINTERNAL);
-            //
-            // // Remove @UnitsRep from polyQualifiers
-            // assert polyQualifiers.containsKey(unitsRepUtils.RAWUNITSINTERNAL);
-            // polyQualifiers.remove(unitsRepUtils.RAWUNITSINTERNAL);
-            //
-            // System.err.println(" === Inference ATF ");
-            // System.err.println(" supertypesMap ");
-            // for (Entry<?, ?> e : supertypesMap.entrySet()) {
-            // System.err.println(" " + e.getKey() + " -> " + e.getValue());
-            // }
-            // System.err.println(" polyQualifiers " + polyQualifiers);
-            // System.err.println(" tops " + tops);
-            // System.err.println(" bottoms " + bottoms);
-
-            /*
-            * Map after update:
-            supertypesMap
-              @checkers.inference.qual.VarAnnot -> [@org.checkerframework.framework.qual.PolyAll]
-              @org.checkerframework.framework.qual.PolyAll -> [@checkers.inference.qual.VarAnnot]
-              @units.qual.PolyUnit -> [@org.checkerframework.framework.qual.PolyAll]
-            polyQualifiers {null=@org.checkerframework.framework.qual.PolyAll}
-            tops [@checkers.inference.qual.VarAnnot]
-            bottoms [@checkers.inference.qual.VarAnnot]
-            */
-        }
-
-        @Override
-        public Set<? extends AnnotationMirror> leastUpperBounds(
-                Collection<? extends AnnotationMirror> annos1,
-                Collection<? extends AnnotationMirror> annos2) {
-            if (InferenceMain.isHackMode(annos1.size() != annos2.size())) {
-                Set<AnnotationMirror> result = AnnotationUtils.createAnnotationSet();
-                for (AnnotationMirror a1 : annos1) {
-                    for (AnnotationMirror a2 : annos2) {
-                        AnnotationMirror lub = leastUpperBound(a1, a2);
-                        if (lub != null) {
-                            result.add(lub);
-                        }
-                    }
-                }
-
-                return result;
-            }
-
-            return super.leastUpperBounds(annos1, annos2);
-        }
-    }
-
-    @Override
     protected InferenceViewpointAdapter createViewpointAdapter() {
         return new UnitsInferenceViewpointAdapter(this);
     }
@@ -314,7 +195,7 @@ public class UnitsInferenceAnnotatedTypeFactory extends InferenceAnnotatedTypeFa
                         result = slotManager.createConstantSlot(unitsRepUtils.DIMENSIONLESS);
                         break;
                     default:
-                        result = slotManager.createLubVariableSlot(lhs, rhs);
+                        result = slotManager.createLubMergeVariableSlot(lhs, rhs);
                         break;
                 }
 
@@ -432,7 +313,7 @@ public class UnitsInferenceAnnotatedTypeFactory extends InferenceAnnotatedTypeFa
             Slot slot = slotManager.getSlot(annot);
             if (slot instanceof ConstantSlot) {
                 AnnotationMirror constant = ((ConstantSlot) slot).getValue();
-                return InferenceQualifierHierarchy.isPolymorphic(constant);
+                return qualHierarchy.isPolymorphicQualifier(constant);
             }
             return false;
         }
