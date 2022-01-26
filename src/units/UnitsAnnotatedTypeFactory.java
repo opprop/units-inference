@@ -1,9 +1,10 @@
 package units;
 
+import checkers.inference.BaseInferenceRealTypeFactory;
+
 import com.sun.source.tree.BinaryTree;
 import com.sun.source.tree.Tree.Kind;
 
-import org.checkerframework.common.basetype.BaseAnnotatedTypeFactory;
 import org.checkerframework.common.basetype.BaseTypeChecker;
 import org.checkerframework.framework.qual.LiteralKind;
 import org.checkerframework.framework.qual.TypeUseLocation;
@@ -23,6 +24,7 @@ import org.checkerframework.framework.type.typeannotator.ListTypeAnnotator;
 import org.checkerframework.framework.type.typeannotator.TypeAnnotator;
 import org.checkerframework.framework.util.AnnotationFormatter;
 import org.checkerframework.framework.util.GraphQualifierHierarchy;
+import org.checkerframework.framework.util.MultiGraphQualifierHierarchy;
 import org.checkerframework.framework.util.MultiGraphQualifierHierarchy.MultiGraphFactory;
 import org.checkerframework.framework.util.defaults.QualifierDefaults;
 import org.checkerframework.javacutil.AnnotationUtils;
@@ -48,7 +50,7 @@ import java.util.Set;
 
 import javax.lang.model.element.AnnotationMirror;
 
-public class UnitsAnnotatedTypeFactory extends BaseAnnotatedTypeFactory {
+public class UnitsAnnotatedTypeFactory extends BaseInferenceRealTypeFactory {
     // static reference to the singleton instance
     protected static UnitsRepresentationUtils unitsRepUtils;
 
@@ -160,8 +162,16 @@ public class UnitsAnnotatedTypeFactory extends BaseAnnotatedTypeFactory {
         defs.addCheckedCodeDefault(unitsRepUtils.TOP, TypeUseLocation.LOCAL_VARIABLE);
     }
 
+    @SuppressWarnings("deprecation")
     @Override
-    public QualifierHierarchy createQualifierHierarchy(MultiGraphFactory factory) {
+    public QualifierHierarchy createQualifierHierarchy() {
+        return MultiGraphQualifierHierarchy.createMultiGraphQualifierHierarchy(this);
+    }
+
+    @SuppressWarnings("deprecation")
+    @Override
+    public QualifierHierarchy createQualifierHierarchyWithMultiGraphFactory(
+            MultiGraphFactory factory) {
         return new UnitsQualifierHierarchy(factory);
     }
 

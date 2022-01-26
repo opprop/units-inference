@@ -11,7 +11,6 @@ import checkers.inference.model.ArithmeticVariableSlot;
 import checkers.inference.model.ConstantSlot;
 import checkers.inference.model.ConstraintManager;
 import checkers.inference.model.Slot;
-import checkers.inference.model.VariableSlot;
 
 import com.sun.source.tree.BinaryTree;
 import com.sun.source.tree.Tree.Kind;
@@ -178,8 +177,7 @@ public class UnitsVisitor extends InferenceVisitor<UnitsChecker, BaseAnnotatedTy
                     break;
                 default:
                     // TODO: replace with LUBSlot pending mier's PR
-                    VariableSlot lubSlot =
-                            slotManager.getVariableSlot(atypeFactory.getAnnotatedType(binaryTree));
+                    Slot lubSlot = slotManager.getSlot(atypeFactory.getAnnotatedType(binaryTree));
                     // Create LUB constraint by default
                     constraintManager.addSubtypeConstraint(lhs, lubSlot);
                     constraintManager.addSubtypeConstraint(rhs, lubSlot);
@@ -272,7 +270,9 @@ public class UnitsVisitor extends InferenceVisitor<UnitsChecker, BaseAnnotatedTy
                     exprType, UnitsRepresentationUtils.getInstance().DIMENSIONLESS)) {
                 if (atypeFactory.getDependentTypesHelper() != null) {
                     AnnotatedTypeMirror type = atypeFactory.getAnnotatedType(node);
-                    atypeFactory.getDependentTypesHelper().checkType(type, node.getType());
+                    atypeFactory
+                            .getDependentTypesHelper()
+                            .checkTypeForErrorExpressions(type, node.getType());
                 }
 
                 // perform scan and reduce as per super.super.visitTypeCast()
