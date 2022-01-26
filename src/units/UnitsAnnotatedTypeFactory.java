@@ -1,9 +1,10 @@
 package units;
 
+import checkers.inference.BaseInferenceRealTypeFactory;
+
 import com.sun.source.tree.BinaryTree;
 import com.sun.source.tree.Tree.Kind;
 
-import org.checkerframework.common.basetype.BaseAnnotatedTypeFactory;
 import org.checkerframework.common.basetype.BaseTypeChecker;
 import org.checkerframework.framework.qual.LiteralKind;
 import org.checkerframework.framework.qual.TypeUseLocation;
@@ -23,9 +24,11 @@ import org.checkerframework.framework.type.typeannotator.ListTypeAnnotator;
 import org.checkerframework.framework.type.typeannotator.TypeAnnotator;
 import org.checkerframework.framework.util.AnnotationFormatter;
 import org.checkerframework.framework.util.GraphQualifierHierarchy;
+import org.checkerframework.framework.util.MultiGraphQualifierHierarchy;
 import org.checkerframework.framework.util.MultiGraphQualifierHierarchy.MultiGraphFactory;
 import org.checkerframework.framework.util.defaults.QualifierDefaults;
 import org.checkerframework.javacutil.AnnotationUtils;
+import org.checkerframework.javacutil.BugInCF;
 import org.checkerframework.javacutil.TreeUtils;
 import org.checkerframework.javacutil.UserError;
 
@@ -48,12 +51,12 @@ import java.util.Set;
 
 import javax.lang.model.element.AnnotationMirror;
 
-public class UnitsAnnotatedTypeFactory extends BaseAnnotatedTypeFactory {
+public class UnitsAnnotatedTypeFactory extends BaseInferenceRealTypeFactory {
     // static reference to the singleton instance
     protected static UnitsRepresentationUtils unitsRepUtils;
 
-    public UnitsAnnotatedTypeFactory(BaseTypeChecker checker) {
-        super(checker, true);
+    public UnitsAnnotatedTypeFactory(BaseTypeChecker checker, boolean isInfer) {
+        super(checker, isInfer);
         unitsRepUtils = UnitsRepresentationUtils.getInstance(processingEnv, elements);
         postInit();
     }
@@ -93,7 +96,7 @@ public class UnitsAnnotatedTypeFactory extends BaseAnnotatedTypeFactory {
         // check to see if it is an internal units annotation
         if (AnnotationUtils.areSameByClass(anno, UnitsRep.class)) {
             // fill in missing base units
-            return anno; // unitsRepUtils.fillMissingBaseUnits(anno);
+            return unitsRepUtils.fillMissingBaseUnits(anno);
         }
 
         // check to see if it's a surface annotation such as @m or @UnknownUnits
@@ -128,7 +131,7 @@ public class UnitsAnnotatedTypeFactory extends BaseAnnotatedTypeFactory {
             return false;
         }
         if (AnnotationUtils.areSameByClass(anno, UnitsRep.class)) {
-            return true;
+            return unitsRepUtils.hasAllBaseUnits(anno);
         }
         if (AnnotationUtils.areSameByClass(anno, PolyUnit.class)) {
             return true;
@@ -161,7 +164,13 @@ public class UnitsAnnotatedTypeFactory extends BaseAnnotatedTypeFactory {
     }
 
     @Override
-    public QualifierHierarchy createQualifierHierarchy(MultiGraphFactory factory) {
+    public QualifierHierarchy createQualifierHierarchy() {
+        return MultiGraphQualifierHierarchy.createMultiGraphQualifierHierarchy(this);
+    }
+
+    @Override
+    public QualifierHierarchy createQualifierHierarchyWithMultiGraphFactory(
+            MultiGraphFactory factory) {
         return new UnitsQualifierHierarchy(factory);
     }
 
@@ -272,6 +281,22 @@ public class UnitsAnnotatedTypeFactory extends BaseAnnotatedTypeFactory {
                 return true;
             }
 
+            // Case: @PolyUnit are treated as @UnknownUnits
+            if (AnnotationUtils.areSame(subAnno, unitsRepUtils.POLYUNIT)) {
+                return isSubtype(unitsRepUtils.TOP, superAnno);
+            }
+            if (AnnotationUtils.areSame(superAnno, unitsRepUtils.POLYUNIT)) {
+                return true;
+            }
+
+            // Case: @RDU shouldn't appear. throw error?
+            if (AnnotationUtils.areSame(subAnno, unitsRepUtils.RECEIVER_DEPENDANT_UNIT)) {
+                return isSubtype(unitsRepUtils.TOP, superAnno);
+            }
+            if (AnnotationUtils.areSame(superAnno, unitsRepUtils.RECEIVER_DEPENDANT_UNIT)) {
+                return true;
+            }
+
             // Case: @UnitsRep(x) <: @UnitsRep(y)
             if (AnnotationUtils.areSameByClass(subAnno, UnitsRep.class)
                     && AnnotationUtils.areSameByClass(superAnno, UnitsRep.class)) {
@@ -289,7 +314,12 @@ public class UnitsAnnotatedTypeFactory extends BaseAnnotatedTypeFactory {
                 // return result;
             }
 
-            return true;
+            throw new BugInCF(
+                    "Uncaught subtype check case:"
+                            + "\n    subtype:   "
+                            + getAnnotationFormatter().formatAnnotationMirror(subAnno)
+                            + "\n    supertype: "
+                            + getAnnotationFormatter().formatAnnotationMirror(superAnno));
         }
     }
 

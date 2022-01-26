@@ -36,7 +36,7 @@ public class UnitsInferenceViewpointAdapter extends InferenceViewpointAdapter {
             return unitsRepUtils.BOTTOM;
         }
         Slot declSlot = InferenceMain.getInstance().getSlotManager().getSlot(declaredAnnotation);
-        if (declSlot.isConstant()) {
+        if (declSlot instanceof ConstantSlot) {
             ConstantSlot cs = (ConstantSlot) declSlot;
             if (AnnotationUtils.areSame(cs.getValue(), unitsRepUtils.RECEIVER_DEPENDANT_UNIT)) {
                 return super.combineAnnotationWithAnnotation(

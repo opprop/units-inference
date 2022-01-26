@@ -52,8 +52,8 @@ public class UnitsChecker extends BaseInferrableChecker {
     }
 
     @Override
-    public UnitsAnnotatedTypeFactory createRealTypeFactory() {
-        return new UnitsAnnotatedTypeFactory(this);
+    public UnitsAnnotatedTypeFactory createRealTypeFactory(boolean infer) {
+        return new UnitsAnnotatedTypeFactory(this, infer);
     }
 
     @Override
